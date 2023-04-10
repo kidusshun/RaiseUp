@@ -8,3 +8,7 @@ RaiseUp is a mobile app that connects startups with investors. Startups can crea
 | Firanmit Megersa | UGR/7847/13 |
 | Jitu Ewnetu      | UGR/3207/13 |
 | Kidus Hunegnaw   | UGR/6554/13 |
+
+# Wheels Auto-Repair
+Wheels is a mobile app that is intended to ease the heavy and tedious work of Garage Technicians and resolve the problem of finding expert technicians for customers. This apps as described on the  features will allow customers and technicians to authenticate and log in, afterwards customers can view different technicians with their respective expertise and rating and make a Service Request. Technicians on the other hand can view the requests made by different customers and Schedule an appointment.
+Features are on issues page.
