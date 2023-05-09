@@ -15,7 +15,7 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
         backgroundColor:Color(0xE8ECDCFD),
         body: PixelPerfect(
-          // assetPath:'assets/images/pixel_technician_signup.jpg',
+          assetPath:'assets/images/pixel_technician_signup.jpg',
           child: CurlyBackgroundPage(
             backgroundImage: Container(
               child:Column(
@@ -49,7 +49,7 @@ class _SignupPageState extends State<SignupPage> {
                             "Keeping You On The Road",
                             style:TextStyle(
                               color:Colors.white70,
-                              fontSize:15.0,
+                              fontSize:17.0,
                               fontFamily:"SfUiTextRegular",
                               letterSpacing: 0.2,
                             ),
