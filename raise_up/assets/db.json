@@ -1,0 +1,46 @@
+{
+    "technicians": [
+      {
+        "id": 1,
+        "name": "John Doe",
+        "phoneNumber": "1234567890",
+        "skills": ["Skill 1", "Skill 2", "Skill 3"],
+        "history": [
+          {
+            "customerName": "Customer 1",
+            "customerPhoneNumber": "1111111111",
+            "date": "2023-05-20"
+          },
+          {
+            "customerName": "Customer 2",
+            "customerPhoneNumber": "2222222222",
+            "date": "2023-05-21"
+          },
+          {
+            "customerName": "Customer 3",
+            "customerPhoneNumber": "3333333333",
+            "date": "2023-05-22"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Jane Smith",
+        "phoneNumber": "9876543210",
+        "skills": ["Skill 2", "Skill 3", "Skill 4"],
+        "history": [
+          {
+            "customerName": "Customer 4",
+            "customerPhoneNumber": "4444444444",
+            "date": "2023-05-23"
+          },
+          {
+            "customerName": "Customer 5",
+            "customerPhoneNumber": "5555555555",
+            "date": "2023-05-24"
+          }
+        ]
+      }
+    ]
+  }
+  
