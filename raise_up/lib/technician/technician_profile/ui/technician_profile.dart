@@ -59,14 +59,14 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
                   color: Color.fromARGB(
                       255, 117, 185, 198), // Set background color to green
                   width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(70),
                   child: Column(
                     children: [
                       CircleAvatar(
-                        radius: 50,
+                        radius: 60,
                         child: Icon(
                           Icons.person,
-                          size: 50,
+                          size: 80,
                         ),
                       ),
                       SizedBox(height: 10),
@@ -94,10 +94,11 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
                             ),
                             SizedBox(width: 5),
                             Text(
-                              'Edit',
+                              'edit',
                               style: TextStyle(
-                                color: Colors.blue,
+                                color: Color.fromARGB(255, 11, 131, 211),
                                 decoration: TextDecoration.underline,
+                                fontSize: 17,
                               ),
                             ),
                           ],
@@ -107,25 +108,32 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
                   ),
                 ),
                 SizedBox(height: 10),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //   children: technicianProfile.skills
+                //       .map<Widget>(
+                //         (skill) => SelectionButton(text: skill),//selectionButton.dart file have been replaced!
+                //                                                 // Make some modifications accordingly
+                //       )
+                //       .toList(),
+                // ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: technicianProfile.skills
-                      .map<Widget>(
-                        (skill) => SelectionButton(text: skill),
-                      )
-                      .toList(),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'History:',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                  // padding: EdgeInsets.all(10),
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children:[Padding(
+                    padding: const EdgeInsets.fromLTRB(15,25,0,0),
+                    child: Text(
+                      'History:',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
+                  ]
                 ),
+               
                 Expanded(
                   child: ListView.builder(
                     itemCount: technicianProfile.history.length,
@@ -158,7 +166,7 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
+                                  color: Color.fromARGB(166, 45, 204, 196).withOpacity(0.5),
                                   spreadRadius: 2,
                                   blurRadius: 5,
                                   offset: Offset(0, 2),

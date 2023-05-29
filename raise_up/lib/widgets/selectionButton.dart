@@ -1,45 +1,31 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
-class SelectionButton extends StatelessWidget {
+class SelectionButton {
   late Color backgroundColor;
   late String text;
   late Color borderColor;
-  bool isSelected;
-  late Function(bool) onSelected;
-
-  SelectionButton({
-    required this.text,
-    this.isSelected = false,
-    void Function(bool)? onSelected,
-  }) {
-    colorPicker();
-    this.onSelected = onSelected ?? (bool value) {};
-  }
-
+  bool? selected;
+  bool? get getSelected => selected;
   void colorPicker() {
-    if (isSelected) {
-      backgroundColor = Color.fromARGB(246, 176, 242, 247);
-      borderColor = Color.fromARGB(199, 20, 158, 189);
-    } else {
+    if (getSelected == false) {
       backgroundColor = Color.fromARGB(237, 217, 217, 217);
       borderColor = Colors.transparent;
+    } else {
+      backgroundColor = Color.fromARGB(246, 176, 242, 247);
+      borderColor = Color.fromARGB(199, 20, 158, 189);
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return FittedBox(
-      child: GestureDetector(
-        onTap: () {
-          isSelected = !isSelected;
-          colorPicker();
-          onSelected(isSelected);
-        },
+  SelectionButton({required this.text, this.selected}) {
+    this.colorPicker();
+  }
+  Widget get selectionButton => FittedBox(
         child: Container(
+          margin:EdgeInsets.symmetric(vertical:8,horizontal: 0),
           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
           constraints: BoxConstraints(
-            minWidth: 0, // Minimum width
-            minHeight: 0, // Minimum height
+            minWidth: 0, 
+            minHeight: 0, 
           ),
           alignment: Alignment.center,
           child: Text(
@@ -48,6 +34,8 @@ class SelectionButton extends StatelessWidget {
               fontSize: 16.0,
             ),
           ),
+          // width: 85,
+          // height: 40,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50.0),
             border: Border.all(
@@ -57,7 +45,5 @@ class SelectionButton extends StatelessWidget {
             color: backgroundColor,
           ),
         ),
-      ),
-    );
-  }
+      );
 }

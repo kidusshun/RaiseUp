@@ -16,3 +16,9 @@ class TechnicianServiceRequestNavigateToAppointmentApprovalState
 
 class TechnicianServiceRequestNavigateToProfileState
     extends TechnicianServiceRequestActionState {}
+
+class TechnicianAppointmentLoadingState extends TechnicianServiceRequestActionState{}
+
+class TechnicianAppointmentSuccessState extends TechnicianServiceRequestActionState{}
+
+
