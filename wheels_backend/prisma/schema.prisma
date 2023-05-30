@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id Int @default(autoincrement()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  
+  email String @unique
+  name String
+  hash String
+
+  role String
+
+  appointments Appointment[]
+  serviceRequests ServiceRequest[]
+  @@map("customer")
+}
+
+model Admin {
+  id Int @default(autoincrement()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  
+  email String @unique
+  name String
+  hash String
+
+  role String
+  @@map("admin")
+}
+
+model Technician {
+  id Int @default(autoincrement()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  
+  email String @unique
+  name String
+  hash String
+
+  role String
+  about String?
+  expertise Expertise[]
+
+  phone BigInt?
+  garage String?
+  location String?
+
+  appointments Appointment[]
+  serviceRequests ServiceRequest[]
+
+  @@map("technician")
+}
+
+
+model Expertise {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  
+  userId Int
+  user   Technician @relation(fields: [userId], references: [id])
+
+  @@map("expertise")
+}
+
+
+model Appointment {
+  id Int @id @default(autoincrement())
+  time DateTime
+  notes String?
+  technicianId Int
+  technician Technician @relation(fields: [technicianId], references: [id])
+  customerId Int
+  customer Customer @relation(fields: [customerId], references: [id])
+}
+
+
+model ServiceRequest {
+  id        Int       @id @default(autoincrement())
+  preferredDate DateTime
+  notes     String?
+  status    String
+  technician Technician? @relation(fields: [technicianId], references: [id])
+  technicianId Int?
+  customer  Customer    @relation(fields: [customerId], references: [id])
+  customerId Int
+}
