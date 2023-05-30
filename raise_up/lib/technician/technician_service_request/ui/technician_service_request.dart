@@ -4,6 +4,7 @@ import 'package:raise_up/technician/technician_service_request/model/technician_
 import 'package:raise_up/widgets/timeselection.dart';
 import '../bloc/technician_service_request_bloc.dart';
 import 'package:raise_up/technician/technician_profile/ui/technician_profile.dart';
+import 'package:intl/intl.dart';
 
 class TechnicianServiceRequest extends StatefulWidget {
   const TechnicianServiceRequest({Key? key}) : super(key: key);
@@ -44,7 +45,7 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
         // }
         // Add any necessary listeners for state changes
         if (state is TechnicianAppointmentLoadingState){
-          print("Appointment unsucessful");
+          print("Appointment loading");
         }else if(state is TechnicianAppointmentSuccessState){
           print("Appointment sucessful");
         }
@@ -73,15 +74,22 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
 
                 return GestureDetector(
                   onTap: ()async {
-                    // Handle contact tap event
-                    // You can call events or perform any action here
-                    // print('Contact tapped: ${contactInfo.customerName}');
                     TimeSelection time=TimeSelection();
                     await time.selectTime(context);
-                    print(time.selectedTime);
-                    TechnicianAppointment appointment=TechnicianAppointment(customer_id:contactInfo.id,notes:contactInfo.note,time:time.selectedTime);
-                    technicianServiceRequestBloc.add (
-                        TechnicianAppointmentSetEvent(appointment: appointment));
+
+                    // TimeOfDay time = TimeOfDay.now();
+                    DateTime now = DateTime.now();
+                    // DateTime dateTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+                    // String formattedTime = DateFormat('hh:mm a').format(dateTime);
+
+                    String formattedDateTime = DateFormat("yyyy-MM-ddTHH:mm:ss").format(DateTime(now.year, now.month, now.day, time.hour, time.minute));
+                    String iso8601String = formattedDateTime + "Z";
+
+                    print(iso8601String);
+                    TechnicianAppointment appointment=TechnicianAppointment(customer_id:contactInfo.id,notes:contactInfo.note,time:iso8601String);
+                    TechnicianServiceRequestBloc().add(
+                                          TechnicianAppointmentSetEvent(
+                                              appointment: appointment));
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),

@@ -31,9 +31,9 @@ class TechnicianServiceRequestBloc
     emit(TechnicianServiceRequestNavigateToProfileState());
   }
 
-  FutureOr<void> technicianAppointmentSetEvent(TechnicianAppointmentSetEvent event, Emitter<TechnicianServiceRequestState> emit) {
+  Future<FutureOr<void>> technicianAppointmentSetEvent(TechnicianAppointmentSetEvent event, Emitter<TechnicianServiceRequestState> emit) async {
     emit(TechnicianAppointmentLoadingState());
-    print(TechnicianAppointmentRepositoryimpl().createAppointment(event.appointment));
+    await TechnicianAppointmentRepositoryimpl().createAppointment(event.appointment);
     emit(TechnicianAppointmentSuccessState());
   }
 }

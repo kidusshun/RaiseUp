@@ -4,6 +4,11 @@ class TimeSelection {
 
   TimeOfDay selectedTime = TimeOfDay.now();
 
+  int get hour => selectedTime.hour;
+
+  int get minute => selectedTime.minute;
+  
+
   dynamic selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
