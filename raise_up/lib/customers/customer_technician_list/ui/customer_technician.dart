@@ -33,14 +33,14 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
       buildWhen: (previous, current) =>
           current != TechnicianServiceRequestActionState,
       listener: (context, state) {
-        if (state is TechnicianServiceRequestNavigateToProfileState) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => TechnicianProfile()));
-        } else if (state
-            is TechnicianServiceRequestNavigateToAppointmentApprovalState) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => TechnicianProfile()));
-        }
+        // if (state is TechnicianServiceRequestNavigateToProfileState) {
+        //   Navigator.push(context,
+        //       MaterialPageRoute(builder: (context) => TechnicianProfile()));
+        // } else if (state
+        //     is TechnicianServiceRequestNavigateToAppointmentApprovalState) {
+        //   Navigator.push(context,
+        //       MaterialPageRoute(builder: (context) => TechnicianProfile()));
+        // }
         // Add any necessary listeners for state changes
       },
       builder: (context, state) {
@@ -52,8 +52,8 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
               IconButton(
                 icon: Icon(Icons.person),
                 onPressed: () {
-                  technicianServiceRequestBloc.add(
-                      TechnicianServiceRequestCustomerProfileClickedEvent());
+                  // technicianServiceRequestBloc.add(
+                  //     TechnicianServiceRequestCustomerProfileClickedEvent());
                   // Handle profile icon button press
                 },
               ),

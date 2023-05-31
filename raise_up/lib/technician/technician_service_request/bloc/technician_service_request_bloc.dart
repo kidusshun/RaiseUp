@@ -12,28 +12,19 @@ part 'technician_service_request_state.dart';
 class TechnicianServiceRequestBloc
     extends Bloc<TechnicianServiceRequestEvent, TechnicianServiceRequestState> {
   TechnicianServiceRequestBloc() : super(TechnicianServiceRequestInitial()) {
-    on<TechnicianServiceRequestCustomerAppointmentClickedEvent>(
-        technicianServiceRequestCustomerAppointmentClickedEvent);
-    on<TechnicianServiceRequestCustomerProfileClickedEvent>(
-        technicianServiceRequestCustomerProfileClickedEvent);
     on<TechnicianAppointmentSetEvent>(technicianAppointmentSetEvent);
   }
 
-  FutureOr<void> technicianServiceRequestCustomerAppointmentClickedEvent(
-      TechnicianServiceRequestCustomerAppointmentClickedEvent event,
-      Emitter<TechnicianServiceRequestState> emit) {
-    emit(TechnicianServiceRequestNavigateToAppointmentApprovalState());
-  }
-
-  FutureOr<void> technicianServiceRequestCustomerProfileClickedEvent(
-      TechnicianServiceRequestCustomerProfileClickedEvent event,
-      Emitter<TechnicianServiceRequestState> emit) {
-    emit(TechnicianServiceRequestNavigateToProfileState());
-  }
-
-  FutureOr<void> technicianAppointmentSetEvent(TechnicianAppointmentSetEvent event, Emitter<TechnicianServiceRequestState> emit) {
+  Future<FutureOr<void>> technicianAppointmentSetEvent(TechnicianAppointmentSetEvent event, Emitter<TechnicianServiceRequestState> emit) async {
     emit(TechnicianAppointmentLoadingState());
-    print(TechnicianAppointmentRepositoryimpl().createAppointment(event.appointment));
-    emit(TechnicianAppointmentSuccessState());
+    String response =await TechnicianAppointmentRepositoryimpl().createAppointment(event.appointment);
+    print(response);
+    if (response=="Successfully Appointed!"){
+      print("hi");
+      emit(TechnicianAppointmentSuccessState(sucess: response));
+    }else{
+      emit(TechnicianAppointmentUnSuccessfulState(failure: response));
+    }
+    
   }
 }

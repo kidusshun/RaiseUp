@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TechnicianAppointment{
-  TimeOfDay time;
+  String time;
   String notes;
   int customer_id;
 
@@ -11,7 +11,7 @@ class TechnicianAppointment{
     return {
       'time': time,
       'notes': notes,
-      'customer_id':customer_id,
+      'customerId':customer_id,
     };
   }
 }

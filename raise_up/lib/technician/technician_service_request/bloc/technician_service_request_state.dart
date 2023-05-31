@@ -6,19 +6,26 @@ abstract class TechnicianServiceRequestState {}
 abstract class TechnicianServiceRequestActionState
     extends TechnicianServiceRequestState {}
 
-class TechnicianServiceRequestSuccessState
-    extends TechnicianServiceRequestState {}
-
 class TechnicianServiceRequestInitial extends TechnicianServiceRequestState {}
-
-class TechnicianServiceRequestNavigateToAppointmentApprovalState
-    extends TechnicianServiceRequestActionState {}
-
-class TechnicianServiceRequestNavigateToProfileState
-    extends TechnicianServiceRequestActionState {}
 
 class TechnicianAppointmentLoadingState extends TechnicianServiceRequestActionState{}
 
-class TechnicianAppointmentSuccessState extends TechnicianServiceRequestActionState{}
+class TechnicianAppointmentSuccessState extends TechnicianServiceRequestActionState{
+  String sucess;
+  TechnicianAppointmentSuccessState({required this.sucess});
+}
+
+class TechnicianAppointmentUnSuccessfulState extends TechnicianServiceRequestActionState{
+  String failure;
+  TechnicianAppointmentUnSuccessfulState({required this.failure});
+}
+
+class TechnicianAppointmentNavigateToHomeActionState extends TechnicianServiceRequestActionState{}
+
+class TechnicianAppointmentNavigateToToDoActionState extends TechnicianServiceRequestActionState{}
+
+class TechnicianAppointmentNavigateToTechnicianAccountHomeActionState extends TechnicianServiceRequestActionState{}
+
+
 
 
