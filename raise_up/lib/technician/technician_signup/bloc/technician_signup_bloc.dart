@@ -52,10 +52,10 @@ class TechnicianSignupBloc
     if (technicianCredentials["confirmationPassword"] !=
         technicianCredentials["password"]) {
       emit(TechnicianSignUpConfarmationPasswordIncorrectState());
-      print("incorrect confirmation password");
+      // print("incorrect confirmation password");
     } else if (technicianCredentials["confirmationPassword"] ==
         technicianCredentials["password"]) {
-      emit(TechnicianSignUpConfarmationPasswordCorrectState());
+      // emit(TechnicianSignUpConfarmationPasswordCorrectState());
     }
     // print(technicianCredentials);
   }

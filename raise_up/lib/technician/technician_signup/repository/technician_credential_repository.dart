@@ -12,14 +12,14 @@ class TechnicianCredentialRepositoryimpl
   @override
   Future<String> createTechnicianUser(
       TechnicianCredential technicianCredential) async {
-    print(technicianCredential.email);
+    // print(technicianCredential.email);
     final response = await http.post(
         Uri.parse('http://10.0.2.2:3000/technician/signup'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(
             technicianCredential.toJson()) // Convert the user object to JSON
         );
-    print(response);
+    // print(response);
     // print(response.body);
     if (response.statusCode == 201) {
       // Successful response
