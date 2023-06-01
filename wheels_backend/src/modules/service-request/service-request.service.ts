@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { createServiceRequestDto } from './dto/create-service-request.dto';
 import { EditServiceRequestDto } from './dto/edit-service-request.dto';
+import { ManageServiceRequestDto } from './dto/manage-service-request.dto';
 
 @Injectable()
 export class ServiceRequestService {
@@ -38,6 +39,18 @@ export class ServiceRequestService {
             where:{customerId:userId}
         })
     }
+
+    async getServiceRequestByStatus(userId:number,dto:ManageServiceRequestDto){
+        return await this.prisma.serviceRequest.findMany({
+            where:{customerId:userId,
+            status:dto.status}
+        })
+    }
+    async getServiceRequestForTechnician(userId:number){
+        return await this.prisma.serviceRequest.findMany({
+            where:{technicianId:userId}
+        })
+    }
     
     
     async editServiceRequest(userId:number, dto:EditServiceRequestDto){
@@ -57,6 +70,16 @@ export class ServiceRequestService {
         return this.prisma.serviceRequest.update({
             where:{id:serviceId},
             data:dto
+        })
+    }
+
+    async manageServiceRequest(userId:number,dto:ManageServiceRequestDto){
+        const serivceRequest= await this.prisma.serviceRequest.update({
+            where:{id:dto.serviceId
+            },
+            data:{
+                status:dto.status
+            }
         })
     }
     

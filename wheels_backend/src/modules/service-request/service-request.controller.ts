@@ -6,6 +6,7 @@ import { createServiceRequestDto } from './dto/create-service-request.dto';
 import { EditServiceRequestDto } from './dto/edit-service-request.dto';
 import { Roles } from '../authorization/roles.decorator';
 import { Role } from '../authorization/enums';
+import { ManageServiceRequestDto } from './dto/manage-service-request.dto';
 
 @UseGuards(CustomerGuard)
 @Controller('service-request')
@@ -25,12 +26,30 @@ export class ServiceRequestController {
     getServiceRequest(@GetUser('id') userId:number){
         return this.serviceRequestService.getServiceRequest(userId);
     }
+
+    @Roles(Role.CUSTOMER)
+    @Get()
+    getServiceRequestByStatus(@GetUser('id') userId:number,@Body() dto:ManageServiceRequestDto){
+        return this.serviceRequestService.getServiceRequestByStatus(userId,dto);
+    }
+
+    @Roles(Role.TECHNICIAN)
+    @Get()
+    getServiceRequestForTechnician(@GetUser('id') userId:number){
+        return this.serviceRequestService.getServiceRequestForTechnician(userId);
+    }
     
     @Roles(Role.CUSTOMER,Role.ADMIN)
     @Patch()
     editServiceRequest(@GetUser('id') userId:number,@Body() dto:EditServiceRequestDto){
         console.log(dto);
         return this.serviceRequestService.editServiceRequest(userId,dto);
+    }
+
+    @Roles(Role.TECHNICIAN)
+    @Patch()
+    manageServiceRequest(@GetUser('id') userId:number, @Body() dto:ManageServiceRequestDto){
+        return this.serviceRequestService.manageServiceRequest(userId,dto);
     }
     
     @Roles(Role.CUSTOMER,Role.ADMIN)
