@@ -9,8 +9,8 @@ export class EditTechnicianDto {
   expertises: string[];
   
   @IsOptional()
-  @IsInt()
-  phone: number;
+  @IsString()
+  phone: string;
   
   @IsOptional()
   @IsString()

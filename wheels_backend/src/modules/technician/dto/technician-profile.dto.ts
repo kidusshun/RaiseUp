@@ -9,7 +9,7 @@ export class CreateTechnicianDto {
   expertises: string[];
   
   @IsNotEmpty()
-  phone: number;
+  phone: string;
   
   @IsNotEmpty()
   @IsString()

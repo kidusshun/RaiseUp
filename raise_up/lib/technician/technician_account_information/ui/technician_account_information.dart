@@ -6,18 +6,14 @@ import 'package:raise_up/widgets/selectionButton.dart';
 import '../bloc/technician_account_information_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class TechnicianAccountInformation extends StatefulWidget {
+  const TechnicianAccountInformation({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<TechnicianAccountInformation> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<TechnicianAccountInformation> {
   final _formKey = GlobalKey<FormState>();
   double spacing = 10.0;
   Color col = Color.fromARGB(235, 217, 217, 217);
@@ -47,7 +43,7 @@ class _MyAppState extends State<MyApp> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                        child: Text("Hello Jhon,",
+                        child: Text("Hello,",
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w400,
@@ -97,6 +93,32 @@ class _MyAppState extends State<MyApp> {
                       BlocConsumer<TechnicianAccountInformationBloc, TechnicianAccountInformationState>(
                         listener: (context, state) {
                           // TODO: implement listener
+                          if (state is TechnicianInputSucessActionState) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Center(child: Text(state.sucess)),
+                              width: 200.0, // Width of the snackbar.
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Color.fromARGB(192, 17, 160, 165),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(60.0),
+                                ),
+                              ),
+                            );
+                          }
+                          else if (state is TechnicianInputFailureActionState) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Center(child: Text(state.failure)),
+                              width: 200.0, // Width of the snackbar.
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Color.fromARGB(192, 236, 59, 36),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(60.0),
+                                ),
+                              ),
+                            );
+                          }
                         },
                         builder: (context, state) {
                           return Form(
@@ -115,6 +137,8 @@ class _MyAppState extends State<MyApp> {
                                       validator: (value) {
                                         if (value?.isEmpty ?? true) {
                                           return 'Please Enter Your Phone Number';
+                                        }else{
+                                          return null;
                                         }
                                       },
                                       decoration: InputDecoration(
@@ -151,6 +175,8 @@ class _MyAppState extends State<MyApp> {
                                       validator: (value) {
                                         if (value?.isEmpty ?? true) {
                                           return 'Please Enter Your Garage Location';
+                                        }else{
+                                          return null;
                                         }
                                       },
                                       decoration: InputDecoration(
@@ -165,7 +191,7 @@ class _MyAppState extends State<MyApp> {
                                     onPressed: () {
                                       if (_formKey.currentState?.validate() ??
                                           false) {}
-                                      print("hi");
+                                      // print("hi");
                                       context.read<TechnicianAccountInformationBloc>().add(TechnicianAccountInformationSubmitButtonEvent());
                                     },
                                     style: ButtonStyle(

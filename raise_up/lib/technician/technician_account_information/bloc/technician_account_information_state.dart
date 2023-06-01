@@ -24,6 +24,14 @@ class TechnicianSelectionButtonUnclickedState
   TechnicianSelectionButtonUnclickedState({required this.isClicked});
 }
 
-class TechnicianInputSucessState extends TechnicianAccountInformationActionState{}
+class TechnicianInputSucessActionState extends TechnicianAccountInformationActionState{
+  String sucess;
+  TechnicianInputSucessActionState({required this.sucess});
+}
 
-class TechnicianInputProgress extends TechnicianAccountInformationActionState{}
+class TechnicianInputLoadingState extends TechnicianAccountInformationActionState{}
+
+class TechnicianInputFailureActionState extends TechnicianAccountInformationActionState{
+  String failure;
+  TechnicianInputFailureActionState({required this.failure});
+}

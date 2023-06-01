@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import '../model/technician_account_information_credential_model.dart';
+import '../repository/technician_account_information_credential_repository.dart';
+
 part 'technician_account_information_event.dart';
 part 'technician_account_information_state.dart';
 
@@ -53,7 +56,7 @@ class TechnicianAccountInformationBloc extends Bloc<
   FutureOr<void> technicianSelectionButtonClickedEvent(
       TechnicianSelectionButtonClickedEvent event,
       Emitter<TechnicianAccountInformationState> emit) {
-    print("buttonSelected state");
+    // print("buttonSelected state");
     isSelected[event.buttonName] = true;
     emit(TechnicianSelectionButtonClickedState(isClicked: isSelected));
   }
@@ -61,25 +64,31 @@ class TechnicianAccountInformationBloc extends Bloc<
   FutureOr<void> technicianSelectionButtonUnclickedEvent(
       TechnicianSelectionButtonUnclickedEvent event,
       Emitter<TechnicianAccountInformationState> emit) {
-    print("buttonunselected state");
+    // print("buttonunselected state");
     isSelected[event.buttonName] = false;
     emit(TechnicianSelectionButtonUnclickedState(isClicked: isSelected));
   }
 
   FutureOr<void> technicianPhoneNumberInputEvent(TechnicianPhoneNumberInputEvent event, Emitter<TechnicianAccountInformationState> emit) {
     technicianCredential["phoneNumber"]=event.phoneNumber;
+    emit(TechnicianSelectionButtonClickedState(isClicked: isSelected));//this is for maintaining the expertise buttons clicked 
+                                                                        // after u clicked the summit button and get an error
   }
 
   FutureOr<void> technicianGarageNameInputEvent(TechnicianGarageNameInputEvent event, Emitter<TechnicianAccountInformationState> emit) {
     technicianCredential["gargeName"]=event.garageName;
+    emit(TechnicianSelectionButtonClickedState(isClicked: isSelected));//this is for maintaining the expertise buttons clicked 
+                                                                        // after u clicked the summit button and get an error
   }
 
   FutureOr<void> technicianGarageLocationInputEvent(TechnicianGarageLocationInputEvent event, Emitter<TechnicianAccountInformationState> emit) {
     // print(technicianCredential);
     technicianCredential["gargeLocation"]=event.garageLocation;
+    emit(TechnicianSelectionButtonClickedState(isClicked: isSelected)); //this is for maintaining the expertise buttons clicked 
+                                                                        // after u clicked the summit button and get an error
   }
 
-  FutureOr<void> technicianAccountInformationSubmitButtonEvent(TechnicianAccountInformationSubmitButtonEvent event, Emitter<TechnicianAccountInformationState> emit) {
+  Future<FutureOr<void>> technicianAccountInformationSubmitButtonEvent(TechnicianAccountInformationSubmitButtonEvent event, Emitter<TechnicianAccountInformationState> emit) async {
     List<String> tempList=[];
     isSelected.forEach((key,value){
       if (value==true){
@@ -87,8 +96,24 @@ class TechnicianAccountInformationBloc extends Bloc<
       }
       technicianCredential["expertise"]=tempList;
   });
-    print(technicianCredential);//email,technicianName,password are remaining.
-    // Now we create http request and save technicianCredential on database.
-    emit(TechnicianInputSucessState());
+    // print(technicianCredential);//email,technicianName,password are remaining.
+    String response;
+    if (technicianCredential["expertise"].isNotEmpty && technicianCredential['gargeLocation']!=""&& technicianCredential['gargeName']!=""&& technicianCredential['phoneNumber']!=""&& technicianCredential['phoneNumber']!=""){
+      TechnicianAccountInformationCredential technicianInformationCredential=TechnicianAccountInformationCredential(expertises:technicianCredential['expertise']!,location:technicianCredential['gargeLocation']!,garage: technicianCredential['gargeName']!,phone: technicianCredential['phoneNumber']!);
+      emit(TechnicianInputLoadingState());
+    response=await TechnicianAccountInformationCredentialRepositoryImpl().updateInformation(technicianInformationCredential);
+    }else if (technicianCredential["expertise"].isEmpty){
+      response="Please Mention atleast one Expertise";
+    }else{
+      response='#';
+    }
+    
+    
+    // print(response);
+    if (response=="Successfully Recoreded!"){
+      emit(TechnicianInputSucessActionState(sucess: response));
+    }else if (response!="#"){
+      emit(TechnicianInputFailureActionState(failure: response));
+    }
   }
 }

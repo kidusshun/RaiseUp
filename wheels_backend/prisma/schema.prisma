@@ -52,7 +52,7 @@ model Technician {
   about String?
   expertise Expertise[]
 
-  phone BigInt?
+  phone String?
   garage String?
   location String?
 
