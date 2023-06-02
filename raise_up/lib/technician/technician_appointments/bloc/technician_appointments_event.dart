@@ -7,3 +7,5 @@ class TechnicianAppointmentsCustomerCardClickedEvent extends TechnicianAppointme
   String customerId;
   TechnicianAppointmentsCustomerCardClickedEvent({required this.customerId});
 }
+
+class TechnicianAppointInitialEvent extends TechnicianAppointmentsEvent{}

@@ -18,7 +18,10 @@ export class AppointmentsService {
     
     async getAppointments(userId:number){
         return await this.prisma.appointment.findMany({
-            where:{technicianId:userId}
+            where:{technicianId:userId},
+            include:{
+                customer:true
+            }
         })
     }
     async getServiceRequestByStatusPending(userId:number){

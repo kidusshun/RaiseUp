@@ -23,7 +23,7 @@ class TechnicianServiceRequestBloc
   Future<FutureOr<void>> technicianAppointmentSetEvent(TechnicianAppointmentSetEvent event, Emitter<TechnicianServiceRequestState> emit) async {
     emit(TechnicianAppointmentLoadingActionState());
     String response =await TechnicianAppointmentRepositoryimpl().createAppointment(event.appointment);
-    print(response);
+    // print(response);
     if (response=="Successfully Appointed!"){
       print("hi");
       emit(TechnicianAppointmentSuccessActionState(sucess: response));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:raise_up/technician/technician_account_information/ui/technician_account_information.dart';
+import 'package:raise_up/technician/technician_appointments/ui/technician_appointments.dart';
 import 'package:raise_up/technician/technician_signin/ui/technician_signin.dart';
 // import 'package:raise_up/technician/technician_signup/ui/technician_signup.dart';
 import 'package:raise_up/technician/technician_signup/ui/technician_signup.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: TechnicianServiceStRequest(),
+      home: TechnicianStAppointment(),
     );
   }
 }

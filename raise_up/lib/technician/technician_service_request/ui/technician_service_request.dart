@@ -40,29 +40,6 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
   @override
   Widget build(BuildContext context) {
     // Hard-coded sample data for contacts
-    final List<ContactInfo> contacts = [
-      ContactInfo(
-          id: 1,
-          note: "Engine Defect",
-          customerName: 'John Doe',
-          customerPhoneNumber: '1234567890'),
-      ContactInfo(
-          id: 2,
-          note: "Spoiler Defect",
-          customerName: 'Jane Smith',
-          customerPhoneNumber: '0987654321'),
-      ContactInfo(
-          id: 3,
-          note: "wheel Defect",
-          customerName: 'Bob Johnson',
-          customerPhoneNumber: '09876543210'),
-      ContactInfo(
-          id: 4,
-          note: "Spoiler Defect",
-          customerName: 'Jane Smit',
-          customerPhoneNumber: '098765432'),
-    ];
-
     return Scaffold(
         appBar: AppBar(
           title: Text("Service Requests"),
@@ -207,102 +184,6 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
             else{
               return Container();
             }
-            // return Container(
-            //   child: ListView.builder(
-            //     itemCount: contacts.length,
-            //     itemBuilder: (context, index) {
-            //       final contactInfo = contacts[index];
-
-            //       return GestureDetector(
-            //         onTap: () async {
-            //           TimeSelection time = TimeSelection();
-            //           await time.selectTime(context);
-
-            //           // TimeOfDay time = TimeOfDay.now();
-            //           DateTime now = DateTime.now();
-            //           // DateTime dateTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
-            //           // String formattedTime = DateFormat('hh:mm a').format(dateTime);
-
-            //           String formattedDateTime =
-            //               DateFormat("yyyy-MM-ddTHH:mm:ss").format(DateTime(
-            //                   now.year,
-            //                   now.month,
-            //                   now.day,
-            //                   time.hour,
-            //                   time.minute));
-            //           String iso8601String = formattedDateTime + "Z";
-
-            //           // print(iso8601String);
-            //           TechnicianAppointment appointment = TechnicianAppointment(
-            //               customer_id: contactInfo.id,
-            //               notes: contactInfo.note,
-            //               time: iso8601String);
-            //           context.read<TechnicianServiceRequestBloc>().add(
-            //                               TechnicianAppointmentSetEvent(
-            //                                   appointment: appointment));
-            //         },
-            //         child: Padding(
-            //           padding:
-            //               EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            //           child: SingleChildScrollView(
-            //             child: Container(
-            //               decoration: BoxDecoration(
-            //                 color: Colors.white,
-            //                 borderRadius: BorderRadius.circular(10),
-            //                 boxShadow: [
-            //                   BoxShadow(
-            //                     color: Color.fromARGB(115, 93, 193, 206),
-            //                     spreadRadius: 2,
-            //                     blurRadius: 5,
-            //                     offset:
-            //                         Offset(0, 2), // changes position of shadow
-            //                   ),
-            //                 ],
-            //               ),
-            //               child: ListTile(
-            //                 contentPadding: EdgeInsets.all(10),
-            //                 leading: CircleAvatar(
-            //                   backgroundColor:
-            //                       Color.fromARGB(255, 67, 139, 149),
-            //                   foregroundColor: Colors.white,
-            //                   radius: 25.0,
-            //                   child: Icon(Icons.person),
-            //                 ),
-            //                 title: Align(
-            //                   alignment: Alignment.centerLeft,
-            //                   child: Text(
-            //                     'Name: //${contactInfo.customerName}',
-            //                     style: TextStyle(
-            //                       fontWeight: FontWeight.bold,
-            //                       fontSize: 17,
-            //                     ),
-            //                   ),
-            //                 ),
-            //                 subtitle: Align(
-            //                   alignment: Alignment.centerLeft,
-            //                   child: Text(
-            //                     'Phone No: ${contactInfo.customerPhoneNumber}',
-            //                     style: TextStyle(
-            //                       fontSize: 15,
-            //                     ),
-            //                   ),
-            //                 ),
-            //                 trailing: Row(
-            //                   mainAxisSize: MainAxisSize.min,
-            //                   children: [
-            //                     Icon(Icons.calendar_month,
-            //                         color: Colors.teal[300]),
-            //                     Text("5/15/23"),
-            //                   ],
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // );
           },
         ),
         bottomNavigationBar: BottomNavigationBar(
