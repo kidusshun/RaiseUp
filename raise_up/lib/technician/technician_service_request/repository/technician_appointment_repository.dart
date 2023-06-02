@@ -23,7 +23,7 @@ class TechnicianAppointmentRepositoryimpl implements TechnicianAppointmentReposi
         'Content-Type': 'application/json',
       }
     );
-    print(response.statusCode);
+    // print(response.statusCode);
     if (response.statusCode == 201) {
       // Successful response
       final responseData = json.decode(response.body);
@@ -35,9 +35,6 @@ class TechnicianAppointmentRepositoryimpl implements TechnicianAppointmentReposi
 
       // Extract time in 12-hour format with AM/PM
       String time = DateFormat('hh:mm a').format(dateTime);
-
-      print(date);
-      print(time);
 
       return "Successfully Appointed!";
     } else {

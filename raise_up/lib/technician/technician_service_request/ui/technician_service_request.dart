@@ -115,7 +115,7 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
             // print("hi");
             if (state is TechnicianServiceRequestIntState){
               List<TechnicianCustomerServiceRequest> serviceRequests=state.customerCredential;
-              print(serviceRequests.length);
+              // print(serviceRequests.length);
               return Container(
               child: ListView.builder(
                 itemCount: serviceRequests.length,
@@ -127,7 +127,8 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
                       await time.selectTime(context);
 
                       // TimeOfDay time = TimeOfDay.now();
-                      DateTime now = DateTime.now();
+                      DateTime now = contactInfo.date;
+                      print(now);
                       // DateTime dateTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
                       // String formattedTime = DateFormat('hh:mm a').format(dateTime);
 
@@ -140,7 +141,7 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
                               time.minute));
                       String iso8601String = formattedDateTime + "Z";
 
-                      print(iso8601String);
+                      // print(iso8601String);
                       TechnicianAppointment appointment = TechnicianAppointment(
                           customer_id: contactInfo.id,
                           notes: "wheel fracture",
