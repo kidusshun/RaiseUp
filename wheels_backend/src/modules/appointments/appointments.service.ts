@@ -21,7 +21,15 @@ export class AppointmentsService {
             where:{technicianId:userId}
         })
     }
-    
+    async getServiceRequestByStatusPending(userId:number){
+        return await this.prisma.serviceRequest.findMany({
+            where:{technicianId:userId,
+            status:"pending"},
+            include:{
+                customer:true
+            }
+        })
+    }
     async editAppointments(userId:number, dto:EditAppointmentDto){
         const appointmentId=dto.appointmentId
         delete dto.appointmentId

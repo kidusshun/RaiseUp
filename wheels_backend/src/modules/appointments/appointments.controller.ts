@@ -25,6 +25,11 @@ export class AppointmentsController {
         
         return this.appointmentsService.getAppointments(userId);
     }
+    @Roles(Role.TECHNICIAN)
+    @Get('pending')
+    getServiceRequestByStatusPending(@GetUser('id') userId:number){
+        return this.appointmentsService.getServiceRequestByStatusPending(userId);
+    }
 
     @Patch()
     @Roles(Role.ADMIN, Role.TECHNICIAN)

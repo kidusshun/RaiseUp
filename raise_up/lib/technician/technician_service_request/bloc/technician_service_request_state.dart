@@ -3,21 +3,25 @@ part of 'technician_service_request_bloc.dart';
 @immutable
 abstract class TechnicianServiceRequestState {}
 
-abstract class TechnicianServiceRequestActionState
-    extends TechnicianServiceRequestState {}
+abstract class TechnicianServiceRequestActionState extends TechnicianServiceRequestState {}
 
 class TechnicianServiceRequestInitial extends TechnicianServiceRequestState {}
 
-class TechnicianAppointmentLoadingState extends TechnicianServiceRequestActionState{}
-
-class TechnicianAppointmentSuccessState extends TechnicianServiceRequestActionState{
-  String sucess;
-  TechnicianAppointmentSuccessState({required this.sucess});
+class TechnicianServiceRequestIntState extends TechnicianServiceRequestState {
+  List<TechnicianCustomerServiceRequest> customerCredential;
+  TechnicianServiceRequestIntState({required this.customerCredential});
 }
 
-class TechnicianAppointmentUnSuccessfulState extends TechnicianServiceRequestActionState{
+class TechnicianAppointmentLoadingActionState extends TechnicianServiceRequestActionState{}
+
+class TechnicianAppointmentSuccessActionState extends TechnicianServiceRequestActionState{
+  String sucess;
+  TechnicianAppointmentSuccessActionState({required this.sucess});
+}
+
+class TechnicianAppointmentUnSuccessfulActionState extends TechnicianServiceRequestActionState{
   String failure;
-  TechnicianAppointmentUnSuccessfulState({required this.failure});
+  TechnicianAppointmentUnSuccessfulActionState({required this.failure});
 }
 
 class TechnicianAppointmentNavigateToHomeActionState extends TechnicianServiceRequestActionState{}
@@ -26,6 +30,9 @@ class TechnicianAppointmentNavigateToToDoActionState extends TechnicianServiceRe
 
 class TechnicianAppointmentNavigateToTechnicianAccountHomeActionState extends TechnicianServiceRequestActionState{}
 
-
+class TechnicianServiceRequestErrorActionState extends TechnicianServiceRequestActionState{
+  dynamic error;
+  TechnicianServiceRequestErrorActionState({this.error});
+}
 
 

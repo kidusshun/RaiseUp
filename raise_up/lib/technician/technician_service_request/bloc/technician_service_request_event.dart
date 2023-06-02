@@ -3,6 +3,8 @@ part of 'technician_service_request_bloc.dart';
 @immutable
 abstract class TechnicianServiceRequestEvent {}
 
+class TechnicianAppointmentInitialEvent extends TechnicianServiceRequestEvent{}
+
 class TechnicianServiceRequestTechnicianAccountNavigationButtonClickedEvent extends TechnicianServiceRequestEvent{
 
 }
@@ -23,3 +25,5 @@ class TechnicianServiceRequestRefreshButtonClickedEvent extends TechnicianServic
 class TechnicianServiceRequestToDoNavigationButtonClickedEvent extends TechnicianServiceRequestEvent{
 
 }
+
+

@@ -7,6 +7,7 @@ import { EditServiceRequestDto } from './dto/edit-service-request.dto';
 import { Roles } from '../authorization/roles.decorator';
 import { Role } from '../authorization/enums';
 import { ManageServiceRequestDto } from './dto/manage-service-request.dto';
+import { GetServiceRequestDto } from './dto/get-service-by-status.dto';
 
 @UseGuards(CustomerGuard)
 @Controller('service-request')
@@ -29,7 +30,7 @@ export class ServiceRequestController {
 
     @Roles(Role.CUSTOMER)
     @Get('getServiceRequestByStatus')
-    getServiceRequestByStatus(@GetUser('id') userId:number,@Body() dto:ManageServiceRequestDto){
+    getServiceRequestByStatus(@GetUser('id') userId:number,@Body() dto:GetServiceRequestDto){
         return this.serviceRequestService.getServiceRequestByStatus(userId,dto);
     }
 

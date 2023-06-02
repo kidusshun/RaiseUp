@@ -6,6 +6,21 @@ import '../bloc/technician_service_request_bloc.dart';
 import 'package:raise_up/technician/technician_profile/ui/technician_profile.dart';
 import 'package:intl/intl.dart';
 
+import '../model/technician_customer_service_request.dart';
+
+class TechnicianServiceStRequest extends StatelessWidget {
+  const TechnicianServiceStRequest({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => TechnicianServiceRequestBloc(),
+      child:TechnicianServiceRequest(),
+    );
+  }
+}
+
+
 class TechnicianServiceRequest extends StatefulWidget {
   const TechnicianServiceRequest({Key? key}) : super(key: key);
 
@@ -15,9 +30,13 @@ class TechnicianServiceRequest extends StatefulWidget {
 }
 
 class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
-  final TechnicianServiceRequestBloc technicianServiceRequestBloc =
-      TechnicianServiceRequestBloc();
-
+  // final TechnicianServiceRequestBloc technicianServiceRequestBloc =
+  //     TechnicianServiceRequestBloc();
+    @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<TechnicianServiceRequestBloc>(context).add(TechnicianAppointmentInitialEvent());
+  }
   @override
   Widget build(BuildContext context) {
     // Hard-coded sample data for contacts
@@ -44,13 +63,7 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
           customerPhoneNumber: '098765432'),
     ];
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => TechnicianServiceRequestBloc(),
-        ),
-      ],
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text("Service Requests"),
           backgroundColor: Color.fromARGB(255, 67, 139, 149),
@@ -62,9 +75,16 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
           ],
         ),
         body: BlocConsumer<TechnicianServiceRequestBloc, TechnicianServiceRequestState>(
+          listenWhen: (previousState, state) {
+             return state is TechnicianServiceRequestActionState;
+          },
+
+          buildWhen: (previousState, state) {
+             return state is! TechnicianServiceRequestActionState;
+          },
           listener: (context, state) {
             // TODO: implement listener
-            if (state is TechnicianAppointmentSuccessState) {
+            if (state is TechnicianAppointmentSuccessActionState) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Center(child: Text(state.sucess)),
@@ -77,7 +97,7 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
                   ),
                 );
               }
-              else if (state is TechnicianAppointmentUnSuccessfulState) {
+              else if (state is TechnicianAppointmentUnSuccessfulActionState) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Center(child: Text(state.failure)),
@@ -92,12 +112,15 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
               }
           },
           builder: (context, state) {
-            return Container(
+            // print("hi");
+            if (state is TechnicianServiceRequestIntState){
+              List<TechnicianCustomerServiceRequest> serviceRequests=state.customerCredential;
+              print(serviceRequests.length);
+              return Container(
               child: ListView.builder(
-                itemCount: contacts.length,
+                itemCount: serviceRequests.length,
                 itemBuilder: (context, index) {
-                  final contactInfo = contacts[index];
-
+                  final contactInfo = serviceRequests[index];
                   return GestureDetector(
                     onTap: () async {
                       TimeSelection time = TimeSelection();
@@ -117,10 +140,10 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
                               time.minute));
                       String iso8601String = formattedDateTime + "Z";
 
-                      // print(iso8601String);
+                      print(iso8601String);
                       TechnicianAppointment appointment = TechnicianAppointment(
                           customer_id: contactInfo.id,
-                          notes: contactInfo.note,
+                          notes: "wheel fracture",
                           time: iso8601String);
                       context.read<TechnicianServiceRequestBloc>().add(
                                           TechnicianAppointmentSetEvent(
@@ -156,19 +179,10 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
                             title: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                'Name: //${contactInfo.customerName}',
+                                'Name: //${contactInfo.name}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17,
-                                ),
-                              ),
-                            ),
-                            subtitle: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Phone No: ${contactInfo.customerPhoneNumber}',
-                                style: TextStyle(
-                                  fontSize: 15,
                                 ),
                               ),
                             ),
@@ -177,7 +191,7 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
                               children: [
                                 Icon(Icons.calendar_month,
                                     color: Colors.teal[300]),
-                                Text("5/15/23"),
+                                Text(DateFormat('dd-MM-yy').format(contactInfo.date)),
                               ],
                             ),
                           ),
@@ -188,6 +202,106 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
                 },
               ),
             );
+            }
+            else{
+              return Container();
+            }
+            // return Container(
+            //   child: ListView.builder(
+            //     itemCount: contacts.length,
+            //     itemBuilder: (context, index) {
+            //       final contactInfo = contacts[index];
+
+            //       return GestureDetector(
+            //         onTap: () async {
+            //           TimeSelection time = TimeSelection();
+            //           await time.selectTime(context);
+
+            //           // TimeOfDay time = TimeOfDay.now();
+            //           DateTime now = DateTime.now();
+            //           // DateTime dateTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+            //           // String formattedTime = DateFormat('hh:mm a').format(dateTime);
+
+            //           String formattedDateTime =
+            //               DateFormat("yyyy-MM-ddTHH:mm:ss").format(DateTime(
+            //                   now.year,
+            //                   now.month,
+            //                   now.day,
+            //                   time.hour,
+            //                   time.minute));
+            //           String iso8601String = formattedDateTime + "Z";
+
+            //           // print(iso8601String);
+            //           TechnicianAppointment appointment = TechnicianAppointment(
+            //               customer_id: contactInfo.id,
+            //               notes: contactInfo.note,
+            //               time: iso8601String);
+            //           context.read<TechnicianServiceRequestBloc>().add(
+            //                               TechnicianAppointmentSetEvent(
+            //                                   appointment: appointment));
+            //         },
+            //         child: Padding(
+            //           padding:
+            //               EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            //           child: SingleChildScrollView(
+            //             child: Container(
+            //               decoration: BoxDecoration(
+            //                 color: Colors.white,
+            //                 borderRadius: BorderRadius.circular(10),
+            //                 boxShadow: [
+            //                   BoxShadow(
+            //                     color: Color.fromARGB(115, 93, 193, 206),
+            //                     spreadRadius: 2,
+            //                     blurRadius: 5,
+            //                     offset:
+            //                         Offset(0, 2), // changes position of shadow
+            //                   ),
+            //                 ],
+            //               ),
+            //               child: ListTile(
+            //                 contentPadding: EdgeInsets.all(10),
+            //                 leading: CircleAvatar(
+            //                   backgroundColor:
+            //                       Color.fromARGB(255, 67, 139, 149),
+            //                   foregroundColor: Colors.white,
+            //                   radius: 25.0,
+            //                   child: Icon(Icons.person),
+            //                 ),
+            //                 title: Align(
+            //                   alignment: Alignment.centerLeft,
+            //                   child: Text(
+            //                     'Name: //${contactInfo.customerName}',
+            //                     style: TextStyle(
+            //                       fontWeight: FontWeight.bold,
+            //                       fontSize: 17,
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 subtitle: Align(
+            //                   alignment: Alignment.centerLeft,
+            //                   child: Text(
+            //                     'Phone No: ${contactInfo.customerPhoneNumber}',
+            //                     style: TextStyle(
+            //                       fontSize: 15,
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 trailing: Row(
+            //                   mainAxisSize: MainAxisSize.min,
+            //                   children: [
+            //                     Icon(Icons.calendar_month,
+            //                         color: Colors.teal[300]),
+            //                     Text("5/15/23"),
+            //                   ],
+            //                 ),
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // );
           },
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -206,7 +320,6 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
             ),
           ],
         ),
-      ),
     );
   }
 }
