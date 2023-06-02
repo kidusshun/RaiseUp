@@ -16,7 +16,6 @@ export class AppointmentsController {
     @Post('create')
     @Roles(Role.ADMIN, Role.TECHNICIAN)
     createAppointments(@GetUser('id') userId:number, @Body() dto:createAppointmentDto){
-
         return this.appointmentsService.createAppointments(userId,dto);
     }
     
@@ -30,7 +29,6 @@ export class AppointmentsController {
     @Patch()
     @Roles(Role.ADMIN, Role.TECHNICIAN)
     editAppointments(@GetUser('id') userId:number,@Body() dto:EditAppointmentDto){
-        
         return this.appointmentsService.editAppointments(userId,dto);
     }
 
@@ -38,7 +36,6 @@ export class AppointmentsController {
     @Roles(Role.ADMIN, Role.TECHNICIAN)
     deleteAppointments(@GetUser('id') userId:number, @Body() appointmentId:{appointmentId:number}){
         console.log(appointmentId);
-        
         return this.appointmentsService.deleteAppointments(userId,appointmentId);
     }
 }

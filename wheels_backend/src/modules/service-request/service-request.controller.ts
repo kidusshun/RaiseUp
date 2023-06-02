@@ -22,38 +22,38 @@ export class ServiceRequestController {
     }
     
     @Roles(Role.CUSTOMER)
-    @Get()
+    @Get('getAllServiceRequestsForCustomer')
     getServiceRequest(@GetUser('id') userId:number){
         return this.serviceRequestService.getServiceRequest(userId);
     }
 
     @Roles(Role.CUSTOMER)
-    @Get()
+    @Get('getServiceRequestByStatus')
     getServiceRequestByStatus(@GetUser('id') userId:number,@Body() dto:ManageServiceRequestDto){
         return this.serviceRequestService.getServiceRequestByStatus(userId,dto);
     }
 
     @Roles(Role.TECHNICIAN)
-    @Get()
+    @Get('getAllServiceRequestsForTechnician')
     getServiceRequestForTechnician(@GetUser('id') userId:number){
         return this.serviceRequestService.getServiceRequestForTechnician(userId);
     }
     
     @Roles(Role.CUSTOMER,Role.ADMIN)
-    @Patch()
+    @Patch('EditServiceRequestsForCustomer')
     editServiceRequest(@GetUser('id') userId:number,@Body() dto:EditServiceRequestDto){
         console.log(dto);
         return this.serviceRequestService.editServiceRequest(userId,dto);
     }
 
     @Roles(Role.TECHNICIAN)
-    @Patch()
+    @Patch('EditServiceRequestsForTechnician')
     manageServiceRequest(@GetUser('id') userId:number, @Body() dto:ManageServiceRequestDto){
         return this.serviceRequestService.manageServiceRequest(userId,dto);
     }
     
     @Roles(Role.CUSTOMER,Role.ADMIN)
-    @Delete()
+    @Delete('DeleteServiceRequestForCustomer')
     deleteServiceRequest(@GetUser('id') userId:number,@Body() serviceId:{"serviceId":number}){
         return this.serviceRequestService.deleteServiceRequest(userId,serviceId.serviceId);
     }

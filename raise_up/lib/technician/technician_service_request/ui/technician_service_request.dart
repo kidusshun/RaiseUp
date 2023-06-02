@@ -117,7 +117,7 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
                               time.minute));
                       String iso8601String = formattedDateTime + "Z";
 
-                      print(iso8601String);
+                      // print(iso8601String);
                       TechnicianAppointment appointment = TechnicianAppointment(
                           customer_id: contactInfo.id,
                           notes: contactInfo.note,

@@ -98,8 +98,9 @@ class TechnicianAccountInformationBloc extends Bloc<
   });
     // print(technicianCredential);//email,technicianName,password are remaining.
     String response;
-    if (technicianCredential["expertise"].isNotEmpty && technicianCredential['gargeLocation']!=""&& technicianCredential['gargeName']!=""&& technicianCredential['phoneNumber']!=""&& technicianCredential['phoneNumber']!=""){
+    if (technicianCredential["expertise"].isNotEmpty && technicianCredential['gargeLocation']!=""&& technicianCredential['gargeName']!=""&& technicianCredential['phoneNumber']!=""){
       TechnicianAccountInformationCredential technicianInformationCredential=TechnicianAccountInformationCredential(expertises:technicianCredential['expertise']!,location:technicianCredential['gargeLocation']!,garage: technicianCredential['gargeName']!,phone: technicianCredential['phoneNumber']!);
+      print(technicianInformationCredential.expertises);
       emit(TechnicianInputLoadingState());
     response=await TechnicianAccountInformationCredentialRepositoryImpl().updateInformation(technicianInformationCredential);
     }else if (technicianCredential["expertise"].isEmpty){

@@ -14,6 +14,7 @@ class TechnicianAccountInformationCredentialRepositoryImpl extends TechnicianAcc
   Future<String> updateInformation(TechnicianAccountInformationCredential technicianInformationCredential ) async {
     final storage= new FlutterSecureStorage();
     String? token = await storage.read(key: "money");
+    // print(jsonEncode(technicianInformationCredential.toJson()));
     // print(a);
     try{
       final response = await http.patch(
@@ -26,6 +27,7 @@ class TechnicianAccountInformationCredentialRepositoryImpl extends TechnicianAcc
     );
     // print(response.body);
     if (response.statusCode == 200) {
+      // print(response.body);
       return "Successfully Recoreded!";
     } else {
       return ('Failed to Record Credential');

@@ -23,7 +23,7 @@ class CustomerConfirmationCredentialRepositoryimpl implements CustomerConfirmati
     if (response.statusCode == 201) {
       // Successful response
       final responseData = json.decode(response.body);
-      await secureStorage.write(key: 'money',value:data["access_token"]);
+      await secureStorage.write(key: 'maywheather',value:data["access_token"]);
       // print(data["access_token"]);
       return ("confirmed Successfully");
     }
