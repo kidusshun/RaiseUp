@@ -4,7 +4,7 @@
 class CustomerAppRouteConstant {
   static const customerSignin = 'CustomerSignin';
   static const customerSignUp = 'customerSignUp';
-  static const customerTechnicianStList = 'customerTechnicianStList';
+  static const customerTechnicianList = 'customerTechnicianList';
   static const customerAppointment = 'customerAppointment';
   // static const technicianAppointments = 'technicianAppointments';
   // static const technicianSignIn = 'technicianSignIn';

@@ -1,4 +1,4 @@
-import { IsDateString, IsInt, IsNotEmpty, IsOptional } from "class-validator";
+import { IsDateString, IsInt, IsNotEmpty, IsOptional, } from "class-validator";
 
 export class EditAppointmentDto{
     @IsDateString()

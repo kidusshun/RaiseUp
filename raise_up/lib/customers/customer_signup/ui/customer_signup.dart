@@ -313,6 +313,11 @@ class _CustomerSignup extends State<CustomerSignup> {
                                         false) {}
                                     context.read<CustomerSignupBloc>().add(
                                         CustomerSignupSignupButtonClickedEvent());
+
+                                        GoRouter.of(context).go(
+                                          CustomerAppRouteConstant
+                                              .customerSignin,
+                                        );
                                   },
                                   style: ButtonStyle(
                                     backgroundColor:
@@ -363,13 +368,6 @@ class _CustomerSignup extends State<CustomerSignup> {
                                           CustomerAppRouteConstant
                                               .customerSignin,
                                         );
-
-                                        // final customerSignupBloc =
-                                        //     BlocProvider.of<CustomerSignupBloc>(
-                                        //         context);
-                                        // customerSignupBloc.add(
-                                        //     CustomerSignupLogInButtonClickedEvent());
-                                        // Navigator.pushNamed(context, '/login');
                                       },
                                       child: Text(
                                         'Login',

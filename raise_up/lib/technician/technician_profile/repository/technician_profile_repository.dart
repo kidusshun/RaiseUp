@@ -5,16 +5,18 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:raise_up/technician/technician_profile/model/technician_profile_class.dart';
 
+import '../model/technicianProfileNameModel.dart';
 import '../model/technician_profile_history.dart';
 
-abstract class TechnicianProfileRepository{}
+abstract class TechnicianProfileRepository{
+  Future<dynamic> getHistory();
+  Future<dynamic> getTechnicianName();
+}
 class TechnicianProfileRepositoryImpl extends TechnicianProfileRepository{
   @override
-  Future<void> getHistory() async {
+  Future<dynamic> getHistory() async {
     final storage= new FlutterSecureStorage();
     String? token = await storage.read(key: "money");
-    // print(token);
-    // print(a);
     final response = await http.get(
       Uri.parse('http://10.0.2.2:3000/appointments/past'),
       headers:{
@@ -22,24 +24,45 @@ class TechnicianProfileRepositoryImpl extends TechnicianProfileRepository{
         'Content-Type': 'application/json',
       }
     );
-    print(response.body);
+    try{
+      if (response.statusCode == 200 && response.body.isNotEmpty) {
+      List<dynamic> body=json.decode(response.body);
+      List<ProfileHistory> technicianList=[];
+      body.forEach((element) { 
+        technicianList.add(ProfileHistory.fromJson(element));
+      });
+      return technicianList;
+    } else if(response.body.isNotEmpty) {
+      return (['Failed to Load History']);
+    }else if(response.body.isEmpty){
+      return ['No History'];
+    }
+    }
+    catch(e){
+      return e;
+    }
   }
-  //   try{
-  //     if (response.statusCode == 200) {
-
-  //     List<dynamic> body=json.decode(response.body);
-  //     List<ProfileHistory> technicianList=[];
-  //     body.forEach((element) { 
-  //       technicianList.add(ProfileHistory.fromJson(element));
-  //     });
-  //     // print(technicianList[0].name);
-  //     return technicianList;
-  //   } else {
-  //     return ('Failed to Appoint Customer');
-  //   }
-  //   }
-  //   catch(e){
-  //     return e;
-  //   }
-  // }
-}
+  @override
+  Future<dynamic> getTechnicianName() async {
+    final storage= new FlutterSecureStorage();
+    String? token = await storage.read(key: "money");
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2:3000/technician-profile/getTechnician'),
+      headers:{
+        'Authorization':'Bearer $token',
+        'Content-Type': 'application/json',
+      }
+    );
+    try{
+      if (response.statusCode == 200) {
+        TechnicianProfileName technicianName=TechnicianProfileName.fromJson(json.decode(response.body));
+        return technicianName.name;
+    } else{
+      return "None";
+    }
+    }
+    catch(e){
+      return e;
+    }
+  }
+  }

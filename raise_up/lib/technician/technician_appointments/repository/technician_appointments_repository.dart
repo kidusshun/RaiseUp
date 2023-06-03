@@ -5,15 +5,13 @@ import 'package:http/http.dart' as http;
 
 import '../model/technician_appointments_model.dart';
 abstract class TechnicianAppointmentsRepository{
-  Future<void> getAppointments();
+  Future<dynamic> getAppointments();
 }
 class TechnicianAppointmentsRepositoryImpl extends TechnicianAppointmentsRepository{
   @override
   Future<List<dynamic>> getAppointments() async {
     final storage= new FlutterSecureStorage();
     String? token = await storage.read(key: "money");
-    // print(token);
-    // print(a);
     final response = await http.get(
       Uri.parse('http://10.0.2.2:3000/appointments'),
       headers:{
@@ -29,7 +27,6 @@ class TechnicianAppointmentsRepositoryImpl extends TechnicianAppointmentsReposit
       body.forEach((element) { 
         technicianList.add(TechnicianAppointments.fromJson(element));
       });
-      // print(technicianList.length);
       return technicianList;
     } else {
       return (['Failed to Appoint Customer']);

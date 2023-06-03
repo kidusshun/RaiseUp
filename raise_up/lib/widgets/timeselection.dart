@@ -22,8 +22,10 @@ class TimeSelection {
         );
       },
     );
-    if (picked != null && picked != selectedTime)
+    if (picked != null && picked != selectedTime){
         selectedTime = picked;
         return selectedTime;
+    }
+        
   }
 }

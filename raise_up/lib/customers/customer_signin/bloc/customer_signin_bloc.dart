@@ -44,8 +44,10 @@ class CustomerSigninBloc
             email: customerConfirmationCredentials['email']!,
             password: customerConfirmationCredentials['password']!);
     // emit(CustomerSigninLoadingActionState());
+    // print("hi");
     String response = await CustomerConfirmationCredentialRepositoryimpl()
         .confirmCustomerUser(customerConfirmationCredential);
+    // print(response);
     if (response == "confirmed Successfully") {
       emit(CustomerSigninSucessActionState(sucess: response));
     } else if (response != "confirmed Successfully") {

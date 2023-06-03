@@ -7,6 +7,7 @@ import { EditServiceRequestDto } from './dto/edit-service-request.dto';
 import { Roles } from '../authorization/roles.decorator';
 import { Role } from '../authorization/enums';
 import { ManageServiceRequestDto } from './dto/manage-service-request.dto';
+import { GetServiceRequestDto } from './dto/get-service-by-status.dto';
 
 @UseGuards(CustomerGuard)
 @Controller('service-request')
@@ -27,24 +28,17 @@ export class ServiceRequestController {
         return this.serviceRequestService.getServiceRequest(userId);
     }
 
-    @Get('past')
     @Roles(Role.CUSTOMER)
+    @Get('getServiceRequestByStatus')
+    getServiceRequestByStatus(@GetUser('id') userId:number,@Body() dto:GetServiceRequestDto){
+        return this.serviceRequestService.getServiceRequestByStatus(userId,dto);
+    }
+
+    @Get('past')
+    @Roles(Role.ADMIN, Role.CUSTOMER)
     async getAppointmentsInPast(@GetUser('id') userId:number){
         const requestTime = new Date();
         this.serviceRequestService.getAppointmentsInPast(userId,requestTime);
-    }
-
-    @Get('appointments')
-    @Roles(Role.ADMIN, Role.CUSTOMER)
-    getAppointments(@GetUser('id') userId:number){
-        const requestTime = new Date();
-        return this.serviceRequestService.getAppointments(userId,requestTime);
-    }
-
-    @Roles(Role.CUSTOMER)
-    @Get('getServiceRequestByStatus')
-    getServiceRequestByStatus(@GetUser('id') userId:number,@Body() dto:ManageServiceRequestDto){
-        return this.serviceRequestService.getServiceRequestByStatus(userId,dto);
     }
 
     @Roles(Role.TECHNICIAN)
@@ -54,7 +48,7 @@ export class ServiceRequestController {
     }
     
     @Roles(Role.CUSTOMER,Role.ADMIN)
-    @Patch()
+    @Patch('EditServiceRequestsForCustomer')
     editServiceRequest(@GetUser('id') userId:number,@Body() dto:EditServiceRequestDto){
         console.log(dto);
         return this.serviceRequestService.editServiceRequest(userId,dto);
@@ -70,5 +64,14 @@ export class ServiceRequestController {
     @Delete('DeleteServiceRequestForCustomer')
     deleteServiceRequest(@GetUser('id') userId:number,@Body() serviceId:{"serviceId":number}){
         return this.serviceRequestService.deleteServiceRequest(userId,serviceId.serviceId);
+    }
+
+
+
+    @Get('appointments')
+    @Roles(Role.ADMIN, Role.CUSTOMER)
+    getAppointments(@GetUser('id') userId:number){
+        const requestTime = new Date();
+        return this.serviceRequestService.getAppointments(userId,requestTime);
     }
 }

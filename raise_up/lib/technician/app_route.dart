@@ -12,16 +12,16 @@ class TechnicianRouter {
   GoRouter router = GoRouter(
     routes: [
       GoRoute(
-        path: '/technicianAppointments',
-        name: TechnicianAppRouteConstant.technicianAppointments,
+        path: '/technicianServiceRequest',
+        name: TechnicianAppRouteConstant.technicianServiceRequest,
         pageBuilder: (context, state) {
           return MaterialPage(
-            child: TechnicianStAppointment(),
+            child: TechnicianServiceStRequest(),
           );
         },
       ),
       GoRoute(
-        path: '/technicianSignUp',
+        path: '/',
         name: TechnicianAppRouteConstant.technicianSignUp,
         pageBuilder: (context, state) {
           return MaterialPage(
@@ -30,7 +30,7 @@ class TechnicianRouter {
         },
       ),
       GoRoute(
-        path: '/',
+        path: '/technicianSignIn',
         name: TechnicianAppRouteConstant.technicianSignIn,
         pageBuilder: (context, state) {
           return MaterialPage(
@@ -56,15 +56,15 @@ class TechnicianRouter {
           );
         },
       ),
-      // GoRoute(
-      //   path: '/technicianAppointments',
-      //   name: TechnicianAppRouteConstant.technicianAppointments,
-      //   pageBuilder: (context, state) {
-      //     return const MaterialPage(
-      //       child: TechnicianAppointment(),
-      //     );
-      //   },
-      // )
+      GoRoute(
+        path: '/technicianAppointments',
+        name: TechnicianAppRouteConstant.technicianAppointments,
+        pageBuilder: (context, state) {
+          return const MaterialPage(
+            child: TechnicianStAppointment(),
+          );
+        },
+      )
     ],
   );
 }

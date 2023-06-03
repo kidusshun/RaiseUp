@@ -23,8 +23,6 @@ class TechnicianSignupBloc
         technicianSignupConfirmationPasswordInputEvent);
     on<TechnicianSignupSignupButtonClickedEvent>(
         technicianSignupSignupButtonClickedEvent);
-    on<TechnicianSignupLogInButtonClickedEvent>(
-        technicianSignupLogInButtonClickedEvent);
   }
 
   FutureOr<void> technicianSignupEmailInputEvent(
@@ -59,7 +57,6 @@ class TechnicianSignupBloc
         technicianCredentials["password"]) {
       emit(TechnicianSignUpConfarmationPasswordCorrectState());
     }
-    // print(technicianCredentials);
   }
 
   Future<void> technicianSignupSignupButtonClickedEvent(
@@ -67,37 +64,28 @@ class TechnicianSignupBloc
       Emitter<TechnicianSignupState> emit) async {
     if (technicianCredentials["confirmationPassword"] ==
         technicianCredentials["password"]) {
-      // print("hi");
       TechnicianCredential technicianCredential = TechnicianCredential(
           email: technicianCredentials['email']!,
           name: technicianCredentials['name']!,
           password: technicianCredentials['password']!);
-      emit(TechnicianSignupLoadingActionState());
       String response = await TechnicianCredentialRepositoryimpl()
           .createTechnicianUser(technicianCredential);
       if (response == "Created Successfully") {
-        // print("sucess");
         emit(TechnicianSignUpSucessActionState(sucess: "Created Successfully"));
       } else if (response == "Account with this email already exists") {
-        // print("Account Already exists");
         emit(TechnicianSignUpfailedActionState(
             failure: "Account with this email already exists"));
       } else if (response == "Use a correct email") {
-        // print("Use a correct email");
         emit(TechnicianSignUpfailedActionState(failure: "Use a correct email"));
       } else if (response == "Unknown Problem occured please try again later") {
-        // print("Unknown Problem occured please try again later");
         emit(TechnicianSignUpfailedActionState(
             failure: "Unknown Problem occured please try again later"));
       }
     }
   }
 
-  static of(BuildContext context) {}
-
   FutureOr<void> technicianSignupLogInButtonClickedEvent(
       TechnicianSignupLogInButtonClickedEvent event,
       Emitter<TechnicianSignupState> emit) {
-    emit(TechnicianSignUpNavigateToLoginState());
   }
 }

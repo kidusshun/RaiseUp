@@ -23,7 +23,7 @@ class CustomerAppointmentsRepositoryImpl
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         });
-    print(response.body);
+    // print(response.body);
     try {
       if (response.statusCode == 200) {
         List<dynamic> body = json.decode(response.body);

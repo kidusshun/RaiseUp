@@ -13,20 +13,32 @@ class TechnicianAppointmentsInitState extends TechnicianAppointmentsState {
   TechnicianAppointmentsInitState({required this.customerCredential});
 }
 
-class TechnicianAppointmentsLoadingActionState
-    extends TechnicianAppointmentsState {}
-
 class TechnicianAppointmentsErrorActionState
     extends TechnicianAppointmentsActionState {
   String error;
   TechnicianAppointmentsErrorActionState({required this.error});
 }
 
-class TechnicianAppointmentsNavigateHomeState
-    extends TechnicianAppointmentsActionState {}
+class TechnicianAppointmentsSucssesfullyUpdatedActionState extends TechnicianAppointmentsActionState{
+  String sucess;
+  TechnicianAppointmentsSucssesfullyUpdatedActionState({required this.sucess});
+}
 
-class TechnicianAppointmentsNavigateState
-    extends TechnicianAppointmentsActionState {}
+class TechnicianAppointmentsFailedToUpdateActionState extends TechnicianAppointmentsActionState{
+  String failure;
+  TechnicianAppointmentsFailedToUpdateActionState({required this.failure});
+}
 
-class TechnicianAppointmentNavigateProfileState
-    extends TechnicianAppointmentsActionState {}
+class TechnicianAppointmentsSucssesfullyDeletedActionState extends TechnicianAppointmentsActionState{
+  String sucess;
+  TechnicianAppointmentsSucssesfullyDeletedActionState({required this.sucess});
+}
+
+class TechnicianAppointmentsFailedToDeleteActionState extends TechnicianAppointmentsActionState{
+  String failure;
+  TechnicianAppointmentsFailedToDeleteActionState({required this.failure});
+}
+
+class TechnicianAppointmentNoDataState extends TechnicianAppointmentsState{}
+
+

@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import '../model/technicianProfileNameModel.dart';
+import '../model/technician_profile_class.dart';
+import '../model/technician_profile_history.dart';
 import '../repository/technician_profile_repository.dart';
 
 part 'technician_profile_event.dart';
@@ -15,28 +18,26 @@ class TechnicianProfileBloc
       // TODO: implement event handler
     });
     on<TechnicianHistoryInitialEvent>(technicianHistoryInitialEvent);
-    on<TechnicianProfileHomeButtonClickedEvent>(
-        technicianProfileHomeButtonClickedEvent);
-    on<TechnicianProfileTodoButtonClickedEvent>(
-        technicianProfileTodoButtonClickedEvent);
+    on<TechnicianHistoryInitialNameEvent>(technicianHistoryInitialNameEvent);
   }
 
   Future<FutureOr<void>> technicianHistoryInitialEvent(
       TechnicianHistoryInitialEvent event,
       Emitter<TechnicianProfileState> emit) async {
-    void response = await TechnicianProfileRepositoryImpl().getHistory();
+    dynamic response = await TechnicianProfileRepositoryImpl().getHistory();
     // print(response);
+    if (response.length==0){
+      emit(TechnicianProfileNoHistoryState());
+    }
+    else if (response[0].runtimeType != String) {
+      emit(TechnicianProfileInitialState(history: response));
+    } else {
+      emit(TechnicianProfileFailedToLoadHistoryActionState(failure: response[0]));
+    }
   }
 
-  FutureOr<void> technicianProfileHomeButtonClickedEvent(
-      TechnicianProfileHomeButtonClickedEvent event,
-      Emitter<TechnicianProfileState> emit) {
-    emit(TechnicianProfileNavigateToHomeState());
-  }
-
-  FutureOr<void> technicianProfileTodoButtonClickedEvent(
-      TechnicianProfileTodoButtonClickedEvent event,
-      Emitter<TechnicianProfileState> emit) {
-    emit(TechnicianProfileNavigateToTodoState());
+  Future<FutureOr<void>> technicianHistoryInitialNameEvent(TechnicianHistoryInitialNameEvent event, Emitter<TechnicianProfileState> emit) async {
+    dynamic responseName=await TechnicianProfileRepositoryImpl().getTechnicianName();
+    emit(TechnicianProfileNameLoadedState(profileName: responseName));
   }
 }

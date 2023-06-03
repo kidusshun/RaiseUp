@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pixel_perfect/pixel_perfect.dart';
 import 'package:raise_up/widgets/gestureDetectorButton.dart';
 import 'package:raise_up/widgets/selectionButton.dart';
-
+import 'package:go_router/go_router.dart';
 import '../bloc/technician_account_information_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:raise_up/technician/app_route_constatnts.dart';
 class TechnicianAccountInformation extends StatefulWidget {
   const TechnicianAccountInformation({Key? key}) : super(key: key);
 
@@ -28,9 +28,7 @@ class _MyAppState extends State<TechnicianAccountInformation> {
         ),
       ],
       child: MaterialApp(
-        home: PixelPerfect(
-          // assetPath: "assets/images/pixel-technician-account-information.jpg",
-          child: Scaffold(
+        home:Scaffold(
             appBar: AppBar(
               title: Text('Account Information'),
               backgroundColor: Color.fromARGB(255, 67, 139, 149),
@@ -156,8 +154,6 @@ class _MyAppState extends State<TechnicianAccountInformation> {
                                         hintText: "Phone Number",
                                       )),
                                 ),
-                                //Garage Name
-                                // Text("Garage Name?"),
                                 SizedBox(
                                   height: 50,
                                 ),
@@ -223,7 +219,11 @@ class _MyAppState extends State<TechnicianAccountInformation> {
                                               TechnicianAccountInformationBloc>()
                                           .add(
                                               TechnicianAccountInformationSubmitButtonEvent());
+                                              ///added
+                                              GoRouter.of(context).pushNamed(
+              TechnicianAppRouteConstant.technicianSignIn,);
                                     },
+                                    ////added
                                     style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
@@ -260,7 +260,6 @@ class _MyAppState extends State<TechnicianAccountInformation> {
               ),
             ),
           ),
-        ),
       ),
     );
   }

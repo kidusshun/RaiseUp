@@ -14,7 +14,7 @@ class TechnicianAccountInformationCredentialRepositoryImpl extends TechnicianAcc
   Future<String> updateInformation(TechnicianAccountInformationCredential technicianInformationCredential ) async {
     final storage= new FlutterSecureStorage();
     String? token = await storage.read(key: "money");
-    // print(a);
+
     try{
       final response = await http.patch(
       Uri.parse('http://10.0.2.2:3000/technician-profile'),
@@ -24,7 +24,6 @@ class TechnicianAccountInformationCredentialRepositoryImpl extends TechnicianAcc
         'Content-Type': 'application/json',
       }
     );
-    // print(response.body);
     if (response.statusCode == 200) {
       return "Successfully Recoreded!";
     } else {

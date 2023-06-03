@@ -13,9 +13,6 @@ class TechnicianServiceRequestIntState extends TechnicianServiceRequestState {
   TechnicianServiceRequestIntState({required this.customerCredential});
 }
 
-class TechnicianAppointmentLoadingActionState
-    extends TechnicianServiceRequestActionState {}
-
 class TechnicianAppointmentSuccessActionState
     extends TechnicianServiceRequestActionState {
   String sucess;
@@ -28,20 +25,11 @@ class TechnicianAppointmentUnSuccessfulActionState
   TechnicianAppointmentUnSuccessfulActionState({required this.failure});
 }
 
-class TechnicianAppointmentNavigateToHomeActionState
-    extends TechnicianServiceRequestActionState {}
-
-class TechnicianAppointmentNavigateToToDoActionState
-    extends TechnicianServiceRequestActionState {}
-
-class TechnicianAppointmentNavigateToTechnicianAccountHomeActionState
-    extends TechnicianServiceRequestActionState {}
-
 class TechnicianServiceRequestErrorActionState
     extends TechnicianServiceRequestActionState {
   dynamic error;
   TechnicianServiceRequestErrorActionState({this.error});
 }
 
-class TechnicianServiceRequestNavigateToProfileState
-    extends TechnicianServiceRequestActionState {}
+class TechnicianServiceRequestNoDataState extends TechnicianServiceRequestState{
+}

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
+import 'package:raise_up/technician/technician_service_request/bloc/technician_service_request_bloc.dart';
 import 'package:raise_up/technician/technician_service_request/model/technician_appointment_model.dart';
 import 'package:raise_up/widgets/timeselection.dart';
 import 'package:raise_up/technician/technician_profile/ui/technician_profile.dart';
@@ -8,7 +10,9 @@ import 'package:go_router/go_router.dart';
 import 'package:raise_up/technician/app_route_constatnts.dart';
 
 import '../bloc/technician_appointments_bloc.dart';
+import '../model/technician_appointment_delete_model.dart';
 import '../model/technician_appointments_model.dart';
+import '../model/technician_appointments_update_model.dart';
 
 class TechnicianStAppointment extends StatelessWidget {
   const TechnicianStAppointment({super.key});
@@ -47,15 +51,11 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
       appBar: AppBar(
         title: Text("Technician Appointments"),
         backgroundColor: Color.fromARGB(255, 67, 139, 149),
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
-              final technicianAppointmentsBloc =
-                  BlocProvider.of<TechnicianAppointmentsBloc>(context);
-              technicianAppointmentsBloc
-                  .add(TechnicianAppointmentProfileButtonClickedEvent());
-
               GoRouter.of(context).pushNamed(
                 TechnicianAppRouteConstant.technicianProfile,
               );
@@ -73,10 +73,10 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
         },
         listener: (context, state) {
           // TODO: implement listener
-          if (state is TechnicianAppointmentsLoadingActionState) {
+          if (state is TechnicianAppointmentsSucssesfullyUpdatedActionState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Center(child: Text("Loading...")),
+                content: Center(child: Text(state.sucess)),
                 width: 200.0, // Width of the snackbar.
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Color.fromARGB(192, 17, 160, 165),
@@ -85,10 +85,34 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
                 ),
               ),
             );
-          } else if (state is TechnicianAppointmentsErrorActionState) {
+          } else if (state is TechnicianAppointmentsFailedToUpdateActionState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Center(child: Text(state.error)),
+                content: Center(child: Text(state.failure)),
+                width: 200.0, // Width of the snackbar.
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Color.fromARGB(192, 236, 59, 36),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(60.0),
+                ),
+              ),
+            );
+          } else if (state is TechnicianAppointmentsSucssesfullyDeletedActionState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(child: Text(state.sucess)),
+                width: 200.0, // Width of the snackbar.
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Color.fromARGB(192, 17, 160, 165),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(60.0),
+                ),
+              ),
+            );
+          }else if (state is TechnicianAppointmentsFailedToDeleteActionState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(child: Text(state.failure)),
                 width: 200.0, // Width of the snackbar.
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Color.fromARGB(192, 236, 59, 36),
@@ -98,9 +122,8 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
               ),
             );
           }
-        },
+        }, 
         builder: (context, state) {
-          // print("hi");
           if (state is TechnicianAppointmentsInitState) {
             List<TechnicianAppointments> appointments =
                 state.customerCredential;
@@ -110,95 +133,108 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
                 itemCount: appointments.length,
                 itemBuilder: (context, index) {
                   final contactInfo = appointments[index];
-                  return GestureDetector(
-                    onTap: () async {
-                      TimeSelection time = TimeSelection();
-                      await time.selectTime(context);
-
-                      // // TimeOfDay time = TimeOfDay.now();
-                      // DateTime now = contactInfo.date;
-                      // print(now);
-                      // // DateTime dateTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
-                      // // String formattedTime = DateFormat('hh:mm a').format(dateTime);
-
-                      // String formattedDateTime =
-                      //     DateFormat("yyyy-MM-ddTHH:mm:ss").format(DateTime(
-                      //         now.year,
-                      //         now.month,
-                      //         now.day,
-                      //         time.hour,
-                      //         time.minute));
-                      // String iso8601String = formattedDateTime + "Z";
-
-                      // // print(iso8601String);
-                      // TechnicianAppointment appointment = TechnicianAppointment(
-                      //     customer_id: contactInfo.id,
-                      //     notes: "wheel fracture",
-                      //     time: iso8601String);
-                      // context.read<TechnicianAppointmentsBloc>().add(
-                      //                     TechnicianAppointmentSetEvent(
-                      //                         appointment: appointment));
+                  return Dismissible(
+                    key:Key(contactInfo.appointmentId.toString()),
+                    direction:DismissDirection.startToEnd,
+                    onDismissed: (DismissDirection direction){
+                      TechnicianAppointmentDelete appointmentDelete=TechnicianAppointmentDelete(appointmentId: contactInfo.appointmentId);
+                      if(direction==DismissDirection.startToEnd){
+                        context.read<TechnicianAppointmentsBloc>().add(
+                          TechnicianAppointmentDeleteButtonClickedEvent(appointmentDelete: appointmentDelete)
+                        );
+                      }
                     },
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                      child: SingleChildScrollView(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color.fromARGB(115, 93, 193, 206),
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset:
-                                    Offset(0, 2), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(10),
-                            leading: CircleAvatar(
-                              backgroundColor:
-                                  Color.fromARGB(255, 67, 139, 149),
-                              foregroundColor: Colors.white,
-                              radius: 25.0,
-                              child: Icon(Icons.person),
-                            ),
-                            title: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Name: ${contactInfo.name}',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                ),
-                              ),
-                            ),
-                            trailing: Column(
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.schedule,
-                                        color: Colors.teal[300]),
-                                    // Text(DateFormat('dd-MM-yy').format(contactInfo.date)),
-                                    Text(DateFormat('h:mm a')
-                                        .format(contactInfo.time))
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.calendar_month,
-                                        color: Colors.teal[300]),
-                                    // Text(DateFormat('dd-MM-yy').format(contactInfo.date)),
-                                    Text(DateFormat('dd-MM-yy')
-                                        .format(contactInfo.time))
-                                  ],
+                    background: Container(
+                    color: Color.fromARGB(255, 255, 165, 142), // Background color when sliding right
+                    child: Row(
+                      children:[
+                        Icon(Icons.delete),
+                        Text("Delete")
+                        ]
+                      ),
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(left: 16.0),
+                    ),
+                    child: GestureDetector(
+                      onTap: () async {
+                        TimeSelection time = TimeSelection();
+                        await time.selectTime(context);
+                        String formattedDateTime =
+                            DateFormat("yyyy-MM-ddTHH:mm:ss").format(DateTime(
+                                contactInfo.time.year,
+                                contactInfo.time.month,
+                                contactInfo.time.day,
+                                time.hour,
+                                time.minute));
+                        String iso8601String = formattedDateTime + "Z";
+                        // print(iso8601String);
+                        // contactInfo.appointmentId;
+                        TechnicianAppointmentsUpdate updatedAppointment=TechnicianAppointmentsUpdate(appointmentId:contactInfo.appointmentId,time:iso8601String,status:contactInfo.status);
+                        context.read<TechnicianAppointmentsBloc>().add(
+                          TechnicianAppointmentsCustomerCardClickedEvent(updatedAppointment: updatedAppointment)
+                        );
+                      },
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                        child: SingleChildScrollView(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color.fromARGB(115, 93, 193, 206),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset:
+                                      Offset(0, 2), // changes position of shadow
                                 ),
                               ],
+                            ),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(10),
+                              leading: CircleAvatar(
+                                backgroundColor:
+                                    Color.fromARGB(255, 67, 139, 149),
+                                foregroundColor: Colors.white,
+                                radius: 25.0,
+                                child: Icon(Icons.person),
+                              ),
+                              title: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Name: ${contactInfo.name}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ),
+                              trailing: Column(
+                                children: [
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.schedule,
+                                          color: Colors.teal[300]),
+                                      // Text(DateFormat('dd-MM-yy').format(contactInfo.date)),
+                                      Text(DateFormat('h:mm a')
+                                          .format(contactInfo.time))
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.calendar_month,
+                                          color: Colors.teal[300]),
+                                      // Text(DateFormat('dd-MM-yy').format(contactInfo.date)),
+                                      Text(DateFormat('dd-MM-yy')
+                                          .format(contactInfo.time))
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -209,7 +245,17 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
               ),
             );
           } else {
-            return Container();
+            return Center(
+              child: Container(
+                child:Text(
+                  "NO APPOINTMENTS",
+                  style:TextStyle(
+                    fontSize: 30,
+                    color: Color.fromARGB(123, 0, 150, 135),
+                  ),
+                  )
+              ),
+            );
           }
         },
       ),
@@ -220,11 +266,6 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
             IconButton(
               icon: Icon(Icons.home),
               onPressed: () {
-                final technicianAppointmentsBloc =
-                    BlocProvider.of<TechnicianAppointmentsBloc>(context);
-                technicianAppointmentsBloc
-                    .add(TechnicianAppointmentHomeButtonClickedEvent());
-
                 GoRouter.of(context).pushNamed(
                   TechnicianAppRouteConstant.technicianServiceRequest,
                 );
@@ -233,23 +274,12 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
             IconButton(
               icon: Icon(Icons.refresh),
               onPressed: () {
-                // final technicianServiceRequestBloc =
-                //     BlocProvider.of<TechnicianServiceRequestBloc>(context);
-                // technicianServiceRequestBloc
-                //     .add(TechnicianServiceRequestRefreshButtonClickedEvent());
-
-                // technicianProfileBloc
-                //     .add(TechnicianProfileTodoButtonClickedEvent());
-                // Handle todo button functionality here
+                BlocProvider.of<TechnicianAppointmentsBloc>(context).add(TechnicianAppointInitialEvent());
               },
             ),
             IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
-                final technicianAppointmentsBloc =
-                    BlocProvider.of<TechnicianAppointmentsBloc>(context);
-                technicianAppointmentsBloc
-                    .add(TechnicianAppointmentToDoButtonClickedEvent());
                 GoRouter.of(context).pushNamed(
                   TechnicianAppRouteConstant.technicianAppointments,
                 );

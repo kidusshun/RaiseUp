@@ -5,22 +5,15 @@ abstract class TechnicianServiceRequestEvent {}
 
 class TechnicianAppointmentInitialEvent extends TechnicianServiceRequestEvent {}
 
-class TechnicianServiceRequestTechnicianAccountNavigationButtonClickedEvent
-    extends TechnicianServiceRequestEvent {}
 
 class TechnicianAppointmentSetEvent extends TechnicianServiceRequestEvent {
   TechnicianAppointment appointment;
-  TechnicianAppointmentSetEvent({required this.appointment});
+  TechnicianAppointmentStatus status;
+  TechnicianAppointmentSetEvent({required this.appointment,required this.status});
 }
-
-class TechnicianServiceRequestHomeNavigationButtonClickedEvent
-    extends TechnicianServiceRequestEvent {}
 
 class TechnicianServiceRequestRefreshButtonClickedEvent
     extends TechnicianServiceRequestEvent {}
 
-class TechnicianServiceRequestToDoNavigationButtonClickedEvent
-    extends TechnicianServiceRequestEvent {}
 
-class TechnicianServiceRequestProfileButtonClicked
-    extends TechnicianServiceRequestEvent {}
+

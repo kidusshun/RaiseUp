@@ -21,16 +21,13 @@ class TechnicianConfirmationCredentialRepositoryimpl implements TechnicianConfir
     );
     dynamic responseBody=response.body;
     Map<String, dynamic> data = jsonDecode(responseBody);
-    // print(data);
     if (response.statusCode == 201) {
       // Successful response
       final responseData = json.decode(response.body);
       await secureStorage.write(key: 'money',value:data["access_token"]);
-      // print(data["access_token"]);
       return ("confirmed Successfully");
     }
     else if (response.statusCode != 201){
-      // print(response.body);
       if (response.statusCode == 400){
         return(data['message'][0]);
       }else{

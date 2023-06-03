@@ -67,7 +67,7 @@ void main() {
           headers: {'Content-Type': 'application/json'},
           body: json.encode(technicianCredential.toJson()),
         )).thenAnswer((_) async {
-          print(http.Response);
+          // print(http.Response);
           return http.Response('Created Successfully', 201);
         });
 

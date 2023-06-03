@@ -7,8 +7,6 @@ abstract class TechnicianSignupActionState extends TechnicianSignupState {}
 
 class TechnicianSignupInitial extends TechnicianSignupState {}
 
-class TechnicianSignupLoadingActionState extends TechnicianSignupActionState {}
-
 class TechnicianSignUpSucessActionState extends TechnicianSignupActionState {
   String sucess;
   TechnicianSignUpSucessActionState({required this.sucess});
@@ -25,4 +23,4 @@ class TechnicianSignUpConfarmationPasswordIncorrectState
 class TechnicianSignUpConfarmationPasswordCorrectState
     extends TechnicianSignupState {}
 
-class TechnicianSignUpNavigateToLoginState extends TechnicianSignupState {}
+

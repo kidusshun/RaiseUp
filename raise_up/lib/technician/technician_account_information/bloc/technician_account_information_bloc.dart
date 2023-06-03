@@ -108,8 +108,6 @@ class TechnicianAccountInformationBloc extends Bloc<
       response='#';
     }
     
-    
-    // print(response);
     if (response=="Successfully Recoreded!"){
       emit(TechnicianInputSucessActionState(sucess: response));
     }else if (response!="#"){

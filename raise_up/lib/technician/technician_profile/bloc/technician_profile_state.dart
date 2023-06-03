@@ -2,19 +2,25 @@ part of 'technician_profile_bloc.dart';
 
 @immutable
 abstract class TechnicianProfileState {}
-
-class TechnicianProfileInitial extends TechnicianProfileState {}
-
 abstract class TechnicianProfileActionState extends TechnicianProfileState {}
 
-class TechnicianProfileLoadingState extends TechnicianProfileState {}
 
-class TechnicianProfileNavigateToHomeState
-    extends TechnicianProfileActionState {}
+class TechnicianProfileInitial extends TechnicianProfileState {
+}
 
-class TechnicianProfileNavigateToTodoState
-    extends TechnicianProfileActionState {}
+class TechnicianProfileInitialState extends TechnicianProfileState {
+  List<ProfileHistory> history;
+  TechnicianProfileInitialState({required this.history});
+}
 
-class TechnicianprofileEditedNameState extends TechnicianProfileActionState {}
+class TechnicianProfileFailedToLoadHistoryActionState extends TechnicianProfileActionState {
+  String failure;
+  TechnicianProfileFailedToLoadHistoryActionState({required this.failure});
+}
 
-class TechnicianProfileErrorState extends TechnicianProfileState {}
+class TechnicianProfileNoHistoryState extends TechnicianProfileState{}
+
+class TechnicianProfileNameLoadedState extends TechnicianProfileState{
+  String profileName;
+  TechnicianProfileNameLoadedState({required this.profileName});
+}

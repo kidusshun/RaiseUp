@@ -7,6 +7,7 @@ import 'package:raise_up/technician/technician_profile/ui/technician_profile.dar
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:raise_up/technician/app_route_constatnts.dart';
+import '../model/technician_appointment_status_model.dart';
 import '../model/technician_customer_service_request.dart';
 
 class TechnicianServiceStRequest extends StatelessWidget {
@@ -54,16 +55,13 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
-              final technicianServiceRequestBloc =
-                  BlocProvider.of<TechnicianServiceRequestBloc>(context);
-              technicianServiceRequestBloc
-                  .add(TechnicianServiceRequestProfileButtonClicked());
+              // final technicianServiceRequestBloc =
+              //     BlocProvider.of<TechnicianServiceRequestBloc>(context);
+              // technicianServiceRequestBloc
+              //     .add(TechnicianServiceRequestProfileButtonClickedEvent());
               GoRouter.of(context).pushNamed(
                 TechnicianAppRouteConstant.technicianProfile,
               );
-              // technicianProfileBloc
-              //     .add(TechnicianProfileTodoButtonClickedEvent());
-              // Handle todo button functionality here
             },
           ),
         ],
@@ -105,11 +103,10 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
           }
         },
         builder: (context, state) {
-          // print("hi");
           if (state is TechnicianServiceRequestIntState) {
             List<TechnicianCustomerServiceRequest> serviceRequests =
                 state.customerCredential;
-            print(serviceRequests.length);
+            // print(serviceRequests.length);
             return Container(
               child: ListView.builder(
                 itemCount: serviceRequests.length,
@@ -118,12 +115,8 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
                   return GestureDetector(
                     onTap: () async {
                       TimeSelection time = TimeSelection();
-                      await time.selectTime(context);
-
-                      // TimeOfDay time = TimeOfDay.now();
-                      DateTime now = DateTime.now();
-                      // DateTime dateTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
-                      // String formattedTime = DateFormat('hh:mm a').format(dateTime);
+                      dynamic tt=await time.selectTime(context);
+                      DateTime now = contactInfo.date;
 
                       String formattedDateTime =
                           DateFormat("yyyy-MM-ddTHH:mm:ss").format(DateTime(
@@ -134,14 +127,23 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
                               time.minute));
                       String iso8601String = formattedDateTime + "Z";
 
-                      print(iso8601String);
+                      // print(iso8601String);
                       TechnicianAppointment appointment = TechnicianAppointment(
-                          customer_id: contactInfo.id,
+                          customer_id: contactInfo.customerId,
                           notes: "wheel fracture",
                           time: iso8601String);
-                      context.read<TechnicianServiceRequestBloc>().add(
+                      TechnicianAppointmentStatus status=TechnicianAppointmentStatus(
+                        serviceId: contactInfo.serviceId,
+                        status:contactInfo.status,
+                      );
+                      // print(tt);
+                      if (tt!=null){
+                        context.read<TechnicianServiceRequestBloc>().add(
                           TechnicianAppointmentSetEvent(
-                              appointment: appointment));
+                              appointment: appointment,
+                              status:status,
+                              ));
+                      }
                     },
                     child: Padding(
                       padding:
@@ -173,7 +175,7 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
                             title: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                'Name: //${contactInfo.name}',
+                                'Name: ${contactInfo.name}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17,
@@ -198,104 +200,18 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
               ),
             );
           } else {
-            return Container();
+            return Center(
+              child: Container(
+                child:Text(
+                  "NO REQUESTS",
+                  style:TextStyle(
+                    fontSize: 30,
+                    color: Color.fromARGB(123, 0, 150, 135),
+                  ),
+                  )
+              ),
+            );
           }
-          // return Container(
-          //   child: ListView.builder(
-          //     itemCount: contacts.length,
-          //     itemBuilder: (context, index) {
-          //       final contactInfo = contacts[index];
-
-          //       return GestureDetector(
-          //         onTap: () async {
-          //           TimeSelection time = TimeSelection();
-          //           await time.selectTime(context);
-
-          //           // TimeOfDay time = TimeOfDay.now();
-          //           DateTime now = DateTime.now();
-          //           // DateTime dateTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
-          //           // String formattedTime = DateFormat('hh:mm a').format(dateTime);
-
-          //           String formattedDateTime =
-          //               DateFormat("yyyy-MM-ddTHH:mm:ss").format(DateTime(
-          //                   now.year,
-          //                   now.month,
-          //                   now.day,
-          //                   time.hour,
-          //                   time.minute));
-          //           String iso8601String = formattedDateTime + "Z";
-
-          //           // print(iso8601String);
-          //           TechnicianAppointment appointment = TechnicianAppointment(
-          //               customer_id: contactInfo.id,
-          //               notes: contactInfo.note,
-          //               time: iso8601String);
-          //           context.read<TechnicianServiceRequestBloc>().add(
-          //                               TechnicianAppointmentSetEvent(
-          //                                   appointment: appointment));
-          //         },
-          //         child: Padding(
-          //           padding:
-          //               EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          //           child: SingleChildScrollView(
-          //             child: Container(
-          //               decoration: BoxDecoration(
-          //                 color: Colors.white,
-          //                 borderRadius: BorderRadius.circular(10),
-          //                 boxShadow: [
-          //                   BoxShadow(
-          //                     color: Color.fromARGB(115, 93, 193, 206),
-          //                     spreadRadius: 2,
-          //                     blurRadius: 5,
-          //                     offset:
-          //                         Offset(0, 2), // changes position of shadow
-          //                   ),
-          //                 ],
-          //               ),
-          //               child: ListTile(
-          //                 contentPadding: EdgeInsets.all(10),
-          //                 leading: CircleAvatar(
-          //                   backgroundColor:
-          //                       Color.fromARGB(255, 67, 139, 149),
-          //                   foregroundColor: Colors.white,
-          //                   radius: 25.0,
-          //                   child: Icon(Icons.person),
-          //                 ),
-          //                 title: Align(
-          //                   alignment: Alignment.centerLeft,
-          //                   child: Text(
-          //                     'Name: //${contactInfo.customerName}',
-          //                     style: TextStyle(
-          //                       fontWeight: FontWeight.bold,
-          //                       fontSize: 17,
-          //                     ),
-          //                   ),
-          //                 ),
-          //                 subtitle: Align(
-          //                   alignment: Alignment.centerLeft,
-          //                   child: Text(
-          //                     'Phone No: ${contactInfo.customerPhoneNumber}',
-          //                     style: TextStyle(
-          //                       fontSize: 15,
-          //                     ),
-          //                   ),
-          //                 ),
-          //                 trailing: Row(
-          //                   mainAxisSize: MainAxisSize.min,
-          //                   children: [
-          //                     Icon(Icons.calendar_month,
-          //                         color: Colors.teal[300]),
-          //                     Text("5/15/23"),
-          //                   ],
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // );
         },
       ),
       bottomNavigationBar: BottomAppBar(
@@ -305,11 +221,6 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
             IconButton(
               icon: Icon(Icons.home),
               onPressed: () {
-                final technicianServiceRequestBloc =
-                    BlocProvider.of<TechnicianServiceRequestBloc>(context);
-                technicianServiceRequestBloc.add(
-                    TechnicianServiceRequestHomeNavigationButtonClickedEvent());
-
                 GoRouter.of(context).pushNamed(
                   TechnicianAppRouteConstant.technicianServiceRequest,
                 );
@@ -321,26 +232,15 @@ class _TechnicianServiceRequestState extends State<TechnicianServiceRequest> {
                 final technicianServiceRequestBloc =
                     BlocProvider.of<TechnicianServiceRequestBloc>(context);
                 technicianServiceRequestBloc
-                    .add(TechnicianServiceRequestRefreshButtonClickedEvent());
-
-                // technicianProfileBloc
-                //     .add(TechnicianProfileTodoButtonClickedEvent());
-                // Handle todo button functionality here
+                    .add(TechnicianAppointmentInitialEvent());
               },
             ),
             IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
-                final technicianServiceRequestBloc =
-                    BlocProvider.of<TechnicianServiceRequestBloc>(context);
-                technicianServiceRequestBloc.add(
-                    TechnicianServiceRequestToDoNavigationButtonClickedEvent());
                 GoRouter.of(context).pushNamed(
                   TechnicianAppRouteConstant.technicianAppointments,
                 );
-                // technicianProfileBloc
-                //     .add(TechnicianProfileTodoButtonClickedEvent());
-                // Handle todo button functionality here
               },
             ),
           ],

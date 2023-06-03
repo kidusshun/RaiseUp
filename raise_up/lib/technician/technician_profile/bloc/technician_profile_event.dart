@@ -5,6 +5,4 @@ abstract class TechnicianProfileEvent {}
 
 class TechnicianHistoryInitialEvent extends TechnicianProfileEvent {}
 
-class TechnicianProfileHomeButtonClickedEvent extends TechnicianProfileEvent {}
-
-class TechnicianProfileTodoButtonClickedEvent extends TechnicianProfileEvent {}
+class TechnicianHistoryInitialNameEvent extends TechnicianProfileEvent{}

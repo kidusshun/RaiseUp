@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { createAppointmentDto } from './dto/create-appointment.dto';
 import { EditAppointmentDto } from './dto/edit-appointment.dto';
+import { EditServiceRequestDto } from '../service-request/dto/edit-service-request.dto';
+import { ManageServiceRequestDto } from './dto/manage-service-request.dto';
 
 @Injectable()
 export class AppointmentsService {
@@ -18,22 +20,31 @@ export class AppointmentsService {
     
     async getAppointments(userId:number){
         return await this.prisma.appointment.findMany({
-            where:{technicianId:userId}
+            where:{technicianId:userId},
+            include:{
+                customer:true
+            }
         })
-    
     }
-
+    async getServiceRequestByStatusPending(userId:number){
+        return await this.prisma.serviceRequest.findMany({
+            where:{technicianId:userId,
+            status:"pending"},
+            include:{
+                customer:true
+            }
+        })
+    }
     async getAppointmentsInPast(userId:number,requestTime: Date){
-    return this.prisma.appointment.findMany({
-      where: {
-        technicianId:userId,
-        time: {
-          lte: requestTime,
-        },
-      },
-    });
-  }
-    
+        return this.prisma.appointment.findMany({
+          where: {
+            technicianId:userId,
+            time: {
+              lte: requestTime,
+            },
+          },
+        });
+      }
     async editAppointments(userId:number, dto:EditAppointmentDto){
         const appointmentId=dto.appointmentId
         delete dto.appointmentId
@@ -56,6 +67,16 @@ export class AppointmentsService {
         }
         return this.prisma.appointment.delete({
             where:{id:appointmentId.appointmentId},
+        })
+    }
+
+    async manageServiceRequest(userId:number,dto:ManageServiceRequestDto){
+        const serivceRequest= await this.prisma.serviceRequest.update({
+            where:{id:dto.serviceId
+            },
+            data:{
+                status:dto.status
+            }
         })
     }
 }

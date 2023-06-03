@@ -12,7 +12,7 @@ abstract class CustomerDateSeclectionRepository{
 class CustomerDateSeclectionRepositoryImpl extends CustomerDateSeclectionRepository {
   Future<String> setDate(CustomerServiceRequest request)async {
     final storage= new FlutterSecureStorage();
-    String? token = await storage.read(key: "maywheather");
+    String? token = await storage.read(key: "may");
     // print(jsonEncode(technicianInformationCredential.toJson()));
     // print(a);
     try{
@@ -24,13 +24,14 @@ class CustomerDateSeclectionRepositoryImpl extends CustomerDateSeclectionReposit
         'Content-Type': 'application/json',
       }
     );
-    print(response.statusCode);
+    // print(response.statusCode);
     if (response.statusCode == 201) {
       // print(response.body);
-      print("sucess");
+      // print(token);
+      // print("suces");
       return "Successfully Recoreded!";
     } else {
-      print("failure");
+      // print("failure");
       return ('Failed to Record Credential');
     }
     }

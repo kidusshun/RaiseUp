@@ -174,7 +174,7 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
                                   DateTime dateAndTime =
                                       await DateSelection().selectDate(context);
                                   // print(dateAndTime);
-                                  print(contactInfo.id);
+                                  // print(contactInfo.id);
                                   String formattedDateTime =
                                       DateFormat("yyyy-MM-ddTHH:mm:ss").format(
                                           DateTime(
@@ -249,7 +249,7 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
                     .add(CustomerTechnicianListHomeButtonClickedEvent());
 
                 GoRouter.of(context).pushNamed(
-                  CustomerAppRouteConstant.customerTechnicianStList,
+                  CustomerAppRouteConstant.customerTechnicianList,
                 );
               },
             ),
@@ -270,6 +270,10 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
             IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
+                GoRouter.of(context).pushNamed(
+                                          CustomerAppRouteConstant
+                                              .customerAppointment,
+                                        );
                 // final CustomerTechnicianListBloc =
                 //     BlocProvider.of<CustomerTechnicianListBloc>(
                 //         context);

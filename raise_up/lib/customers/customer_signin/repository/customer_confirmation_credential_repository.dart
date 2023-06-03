@@ -26,7 +26,7 @@ class CustomerConfirmationCredentialRepositoryimpl
     if (response.statusCode == 201) {
       // Successful response
       final responseData = json.decode(response.body);
-      await secureStorage.write(key: 'mayweather', value: data["access_token"]);
+      await secureStorage.write(key: 'may', value: data["access_token"]);
       // print(data["access_token"]);
       return ("confirmed Successfully");
     } else if (response.statusCode != 201) {

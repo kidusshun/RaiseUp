@@ -18,16 +18,14 @@ class CustomerRouter {
   GoRouter router = GoRouter(
     routes: [
       GoRoute(
-        path: '/',
+        path: '/customerSignin',
         name: CustomerAppRouteConstant.customerSignin,
-        pageBuilder: (context, state) {
-          return MaterialPage(
-            child: CustomerSignin(),
-          );
+        builder: (context, state) {
+          return CustomerSignin();
         },
       ),
       GoRoute(
-        path: '/customerSignUp',
+        path: '/',
         name: CustomerAppRouteConstant.customerSignUp,
         pageBuilder: (context, state) {
           return MaterialPage(
@@ -35,15 +33,13 @@ class CustomerRouter {
           );
         },
       ),
-      // GoRoute(
-      //   path: '/customerSignIn',
-      //   name: CustomerAppRouteConstant.customerSignin,
-      //   pageBuilder: (context, state) {
-      //     return MaterialPage(
-      //       child: CustomerSignin(),
-      //     );
-      //   },
-      // ),
+      GoRoute(
+        path: '/CustomerTechnicianList',
+        name: CustomerAppRouteConstant.customerTechnicianList,
+        builder: (context, state) {
+          return CustomerTechnicianStList();
+        },
+      ),
       // GoRoute(
       //   path: '/technicianProfile',
       //   name: CustomerAppRouteConstant.technicianProfile,
@@ -63,7 +59,7 @@ class CustomerRouter {
       //   },
       // ),
       GoRoute(
-        path: '/technicianAppointments',
+        path: '/customerAppointments',///changed
         name: CustomerAppRouteConstant.customerAppointment,
         pageBuilder: (context, state) {
           return const MaterialPage(

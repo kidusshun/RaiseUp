@@ -4,6 +4,8 @@ import 'package:raise_up/technician/technician_service_request/model/technician_
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../model/technician_appointment_status_model.dart';
+
 
 abstract class TechnicianAppointmentRepository {
   Future<String> createAppointment(TechnicianAppointment appointment);
@@ -17,31 +19,43 @@ class TechnicianAppointmentRepositoryimpl implements TechnicianAppointmentReposi
     // print(a);
     final response = await http.post(
       Uri.parse('http://10.0.2.2:3000/appointments/create'),
-      body: jsonEncode(appointment.toJson()), // Convert the user object to JSON
+      body: jsonEncode(appointment.toJson()), 
       headers:{
         'Authorization':'Bearer $token',
         'Content-Type': 'application/json',
       }
     );
-    print(response.statusCode);
     if (response.statusCode == 201) {
       // Successful response
       final responseData = json.decode(response.body);
-      // print(responseData);
 
       DateTime dateTime = DateTime.parse(responseData['time']);
       
       String date = DateFormat('yyyy-MM-dd').format(dateTime);
 
-      // Extract time in 12-hour format with AM/PM
       String time = DateFormat('hh:mm a').format(dateTime);
-
-      print(date);
-      print(time);
 
       return "Successfully Appointed!";
     } else {
       // Handle error response
+      return ('Failed to Appoint Customer');
+    }
+  }
+
+  Future<String> modifyAppointment(TechnicianAppointmentStatus status) async {
+    final storage= new FlutterSecureStorage();
+    String? token = await storage.read(key: "money");
+    final response = await http.patch(
+      Uri.parse('http://10.0.2.2:3000/appointments/EditServiceRequestsForTechnician'),
+      body: jsonEncode(status.toJson()),
+      headers:{
+        'Authorization':'Bearer $token',
+        'Content-Type': 'application/json',
+      }
+    );
+    if (response.statusCode == 200) {
+      return "Successfully Appointed!";
+    } else {
       return ('Failed to Appoint Customer');
     }
   }

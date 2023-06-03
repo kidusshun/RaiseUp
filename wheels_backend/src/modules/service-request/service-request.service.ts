@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { createServiceRequestDto } from './dto/create-service-request.dto';
 import { EditServiceRequestDto } from './dto/edit-service-request.dto';
 import { ManageServiceRequestDto } from './dto/manage-service-request.dto';
+import { GetServiceRequestDto } from './dto/get-service-by-status.dto';
 
 @Injectable()
 export class ServiceRequestService {
@@ -40,28 +41,7 @@ export class ServiceRequestService {
         })
     }
 
-    async getAppointments(userId:number,reqeustTime:Date){
-        return await this.prisma.appointment.findMany({
-            where:{customerId:userId,time:{
-                gt:reqeustTime
-            }},
-            include:{
-                technician:true
-            }
-        })
-    }
-    async getAppointmentsInPast(userId:number,requestTime: Date){
-        return this.prisma.appointment.findMany({
-          where: {
-            customerId:userId,
-            time: {
-              lte: requestTime,
-            },
-          },
-        });
-      }
-
-    async getServiceRequestByStatus(userId:number,dto:ManageServiceRequestDto){
+    async getServiceRequestByStatus(userId:number,dto:GetServiceRequestDto){
         return await this.prisma.serviceRequest.findMany({
             where:{customerId:userId,
             status:dto.status}
@@ -72,7 +52,18 @@ export class ServiceRequestService {
             where:{technicianId:userId}
         })
     }
+
     
+    async getAppointmentsInPast(userId:number,requestTime: Date){
+        return this.prisma.appointment.findMany({
+          where: {
+            customerId:userId,
+            time: {
+              lte: requestTime,
+            },
+          },
+        });
+      }
     
     async editServiceRequest(userId:number, dto:EditServiceRequestDto){
         const serviceId=dto.serviceId
@@ -118,6 +109,17 @@ export class ServiceRequestService {
             where:{
                 id:serviceId
             },
+        })
+    }
+
+    async getAppointments(userId:number,reqeustTime:Date){
+        return await this.prisma.appointment.findMany({
+            where:{customerId:userId,time:{
+                gt:reqeustTime
+            }},
+            include:{
+                technician:true
+            }
         })
     }
 }

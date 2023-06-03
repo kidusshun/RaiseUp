@@ -42,8 +42,8 @@ class _CustomerServiceRequestState extends State<CustomerAppointment> {
     // Hard-coded sample data for contacts
     return Scaffold(
       appBar: AppBar(
-        title: Text("appointments"),
-        backgroundColor: Color.fromARGB(255, 67, 139, 149),
+        title: Text("Technician appointments"),
+        backgroundColor:Color.fromRGBO(251, 165, 46, 1),
         actions: [
           IconButton(
             icon: Icon(Icons.person),

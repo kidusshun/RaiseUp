@@ -1,14 +1,18 @@
 class TechnicianCustomerServiceRequest{
   String name;
   DateTime date;
-  int id;
-  TechnicianCustomerServiceRequest({required this.name,required this.date,required this.id});
+  int customerId;
+  int serviceId;
+  String status;
+  TechnicianCustomerServiceRequest({required this.name,required this.date,required this.customerId,required this.serviceId,required this.status});
 
   factory TechnicianCustomerServiceRequest.fromJson(Map<String, dynamic> json) {
     return TechnicianCustomerServiceRequest(
       name: json['customer']['name'],
       date: DateTime.parse(json['preferredDate']),
-      id:json['customer']['id'],
+      customerId:json['customer']['id'],
+      serviceId:json['id'],
+      status:json['status'],
     );
   }
 }

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixel_perfect/pixel_perfect.dart';
-
+import 'package:go_router/go_router.dart';
+import 'package:raise_up/technician/app_route_constatnts.dart';
 import '../bloc/technician_signin_bloc.dart';
 
 class TechnicianSignin extends StatefulWidget {
@@ -23,9 +24,7 @@ class _TechnicianSigninPageState extends State<TechnicianSignin> {
       ],
       child: Scaffold(
         backgroundColor: Color(0xE8ECDCFD),
-        body: PixelPerfect(
-          // assetPath: 'assets/images/pixel-technician-login.jpg',
-          child: CurlyBackgroundPage(
+        body: CurlyBackgroundPage(
             backgroundImage: Container(
               child: Column(
                 children: [
@@ -109,6 +108,9 @@ class _TechnicianSigninPageState extends State<TechnicianSignin> {
                               ),
                             ),
                           );
+                          GoRouter.of(context).pushNamed(
+                                  TechnicianAppRouteConstant.technicianServiceRequest,);
+
                         } else if (state is TechnicianSigninFailedActionState) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -301,7 +303,7 @@ class _TechnicianSigninPageState extends State<TechnicianSignin> {
               ),
             ),
           ),
-        ),
+      
       ),
     );
   }

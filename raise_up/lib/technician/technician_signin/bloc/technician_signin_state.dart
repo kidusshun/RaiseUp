@@ -16,7 +16,3 @@ class TechnicianSigninFailedActionState extends TechnicianSigninActionState{
   String failure;
   TechnicianSigninFailedActionState({required this.failure});
 }
-
-class TechnicianSigninLoadingActionState extends TechnicianSigninActionState{
-
-}

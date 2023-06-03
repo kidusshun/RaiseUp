@@ -32,7 +32,6 @@ class TechnicianSigninBloc extends Bloc<TechnicianSigninEvent, TechnicianSigninS
 
   Future<FutureOr<void>> technicianSigninLoginButtonClickedEvent(TechnicianSigninLoginButtonClickedEvent event, Emitter<TechnicianSigninState> emit) async {
     TechnicianConfirmationCredential technicianConfirmationCredential=TechnicianConfirmationCredential(email: technicianConfirmationCredentials['email']!, password: technicianConfirmationCredentials['password']!);
-    emit(TechnicianSigninLoadingActionState());
     String response= await TechnicianConfirmationCredentialRepositoryimpl().confirmTechnicianUser(technicianConfirmationCredential);
     if (response=="confirmed Successfully"){
       emit(TechnicianSigninSucessActionState(sucess: response));
@@ -40,6 +39,5 @@ class TechnicianSigninBloc extends Bloc<TechnicianSigninEvent, TechnicianSigninS
     else if (response!="confirmed Successfully"){
       emit(TechnicianSigninFailedActionState(failure: response));
     }
-    
   }
 }
