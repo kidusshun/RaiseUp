@@ -15,13 +15,7 @@ export class CustomerService {
             }
         })
     }
-    getAllTechnician(){
-        return this.prisma.technician.findMany({
-            include:{
-                expertise:true
-            }
-        })
-    }
+
     async editTCustomer(userId:number, dto:EditCustomer){
         if(dto.email && dto.name){
             return await this.prisma.customer.update({

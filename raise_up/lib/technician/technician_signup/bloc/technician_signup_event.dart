@@ -26,3 +26,5 @@ class TechnicianSignupConfirmationPasswordInputEvent
 }
 
 class TechnicianSignupSignupButtonClickedEvent extends TechnicianSignupEvent {}
+
+class TechnicianSignupLogInButtonClickedEvent extends TechnicianSignupEvent {}

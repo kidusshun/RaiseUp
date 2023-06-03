@@ -25,18 +25,12 @@ export class TechnicianController {
     }
     
 
-    @Roles(Role.ADMIN, Role.TECHNICIAN,Role.CUSTOMER) //changed.
+    @Roles(Role.ADMIN, Role.TECHNICIAN)
     @Get('getTechnician')
     getTechnician(@GetUser('id') userId:number){
+        
         return this.technicianService.getTechnician(userId);
     }
-
-    @Roles(Role.ADMIN, Role.TECHNICIAN,Role.CUSTOMER) //changed.
-    @Get('getAllTechnician')
-    getAllTechnician(@GetUser('id') userId:number){
-        return this.technicianService.getAllTechnician();
-    }
-
     
     
     

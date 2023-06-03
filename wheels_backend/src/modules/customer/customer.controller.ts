@@ -22,11 +22,7 @@ export class CustomerController {
         // return this.customerService.createTechnician(userId,dto);
     }
     
-    @Roles(Role.ADMIN, Role.TECHNICIAN,Role.CUSTOMER) //changed.
-    @Get('getAllTechnician')
-    getAllTechnician(@GetUser('id') userId:number){
-        return this.customerService.getAllTechnician();
-    }
+    
 
     @Get()
     @Roles(Role.CUSTOMER)

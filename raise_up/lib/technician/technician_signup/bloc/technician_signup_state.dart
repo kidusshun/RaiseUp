@@ -24,3 +24,5 @@ class TechnicianSignUpConfarmationPasswordIncorrectState
 
 class TechnicianSignUpConfarmationPasswordCorrectState
     extends TechnicianSignupState {}
+
+class TechnicianSignUpNavigateToLoginState extends TechnicianSignupState {}

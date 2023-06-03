@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pixel_perfect/pixel_perfect.dart';
+import 'package:raise_up/customers/customer_signup/bloc/customer_signup_bloc.dart'
+    show CustomerSignupLogInButtonClickedEvent;
+
+// import 'package:raise_up/technician/technician_signup/bloc/technician_signup_bloc.dart';
 
 import '../bloc/customer_signup_bloc.dart';
+import 'package:raise_up/customers/app_route_customers_constatnts.dart';
 
 class CustomerSignup extends StatefulWidget {
   @override
@@ -24,7 +30,7 @@ class _CustomerSignup extends State<CustomerSignup> {
       child: Scaffold(
         backgroundColor: Color.fromARGB(232, 255, 255, 255),
         body: PixelPerfect(
-          assetPath: 'assets/images/pixel_customer-signup.jpg',
+          // assetPath: 'assets/images/pixel_customer-signup.jpg',
           child: CurlyBackgroundPage(
             backgroundImage: Container(
               child: Column(
@@ -91,7 +97,8 @@ class _CustomerSignup extends State<CustomerSignup> {
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.all(16.0),
-                    child: BlocConsumer<CustomerSignupBloc, CustomerSignupState>(
+                    child:
+                        BlocConsumer<CustomerSignupBloc, CustomerSignupState>(
                       listener: (context, state) {
                         // TODO: implement listener
                         if (state is CustomerSignUpSucessActionState) {
@@ -119,6 +126,10 @@ class _CustomerSignup extends State<CustomerSignup> {
                               ),
                             ),
                           );
+                        } else if (state
+                            is CustomerSignupLogInButtonClickedEvent) {
+                          GoRouter.of(context).pushNamed(
+                              CustomerAppRouteConstant.customerSignin);
                         }
                       },
                       builder: (context, state) {
@@ -344,7 +355,21 @@ class _CustomerSignup extends State<CustomerSignup> {
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(context, '/login');
+                                        BlocProvider.of<CustomerSignupBloc>(
+                                                context)
+                                            .add(
+                                                CustomerSignupLogInButtonClickedEvent());
+                                        GoRouter.of(context).pushNamed(
+                                          CustomerAppRouteConstant
+                                              .customerSignin,
+                                        );
+
+                                        // final customerSignupBloc =
+                                        //     BlocProvider.of<CustomerSignupBloc>(
+                                        //         context);
+                                        // customerSignupBloc.add(
+                                        //     CustomerSignupLogInButtonClickedEvent());
+                                        // Navigator.pushNamed(context, '/login');
                                       },
                                       child: Text(
                                         'Login',

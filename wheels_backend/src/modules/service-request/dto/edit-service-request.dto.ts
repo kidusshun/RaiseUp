@@ -4,13 +4,21 @@ export class EditServiceRequestDto{
     @IsNotEmpty()
     serviceId:number;
     
+    @IsOptional()
+    @IsString()
+    type?: string;
+    
     @IsDate()
     @IsOptional()
     preferredDate?: Date;
     
+    
     @IsOptional()
     @IsString()
     notes?: string;
+    
+    
+    
     
     @IsInt()
     @IsOptional()

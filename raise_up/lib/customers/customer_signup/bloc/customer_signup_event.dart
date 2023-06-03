@@ -18,8 +18,7 @@ class CustomerSignupPasswordInputEvent extends CustomerSignupEvent {
   CustomerSignupPasswordInputEvent({required this.password});
 }
 
-class CustomerSignupConfirmationPasswordInputEvent
-    extends CustomerSignupEvent {
+class CustomerSignupConfirmationPasswordInputEvent extends CustomerSignupEvent {
   String confirmationPassword;
   CustomerSignupConfirmationPasswordInputEvent(
       {required this.confirmationPassword});
@@ -27,3 +26,4 @@ class CustomerSignupConfirmationPasswordInputEvent
 
 class CustomerSignupSignupButtonClickedEvent extends CustomerSignupEvent {}
 
+class CustomerSignupLogInButtonClickedEvent extends CustomerSignupEvent {}

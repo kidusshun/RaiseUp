@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:raise_up/customers/app_route_customers_constatnts.dart';
+import 'package:go_router/go_router.dart';
 import 'package:raise_up/customers/customer_technician_list/model/technician_credential_model.dart';
 import 'package:raise_up/technician/technician_service_request/bloc/technician_service_request_bloc.dart';
 import 'package:raise_up/technician/technician_profile/ui/technician_profile.dart';
@@ -10,17 +12,27 @@ import 'package:raise_up/widgets/selectionButton.dart';
 import '../../../widgets/dateselection.dart';
 import '../model/customer_service_request_model.dart';
 
-
 class CustomerTechnicianStList extends StatelessWidget {
-  const CustomerTechnicianStList({super.key});
+  const CustomerTechnicianStList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CustomerTechnicianListBloc(),
-      child:CustomerTechnicianList(),
+      child: CustomerTechnicianList(),
     );
   }
+}
+
+// class _CustomerTechnicianListState extends State<CustomerTechnicianListState> {
+//   final CustomerTechnicianListBloc technicianServiceRequestBloc =
+//       CustomerTechnicianListBloc();
+
+Widget build(BuildContext context) {
+  return BlocProvider(
+    create: (context) => CustomerTechnicianListBloc(),
+    child: CustomerTechnicianList(),
+  );
 }
 
 class CustomerTechnicianList extends StatefulWidget {
@@ -35,82 +47,83 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<CustomerTechnicianListBloc>(context).add(CustomerTechnicianListInitEvent());
+    BlocProvider.of<CustomerTechnicianListBloc>(context)
+        .add(CustomerTechnicianListInitEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Customer Technician List"),
-          backgroundColor: Color.fromRGBO(251, 165, 46, 1), // App bar color
-          actions: [
-            IconButton(
-              icon: Icon(Icons.person),
-              onPressed: () {
-                // technicianServiceRequestBloc.add(
-                //     TechnicianServiceRequestCustomerProfileClickedEvent());
-                // Handle profile icon button press
-              },
-            ),
-          ],
-        ),
-        body: BlocConsumer<CustomerTechnicianListBloc,
-            CustomerTechnicianListState>(
-          listenWhen: (previousState, state) {
-             return state is CustomerTechnicianListActionState;
-          },
-
-          buildWhen: (previousState, state) {
-             return state is! CustomerTechnicianListActionState;
-          },
-          listener: (context, state) {
-            if (state is CustomerTechnicianListErrorActionState){       
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Center(child: Text(state.error)),
-                  width: 200.0, // Width of the snackbar.
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Color.fromARGB(192, 221, 39, 39),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(60.0),
-                    ),
-                  ),
-                );
-                        
-            }
-            if (state is customerTechnicianListBookButtonClickedSucessActionState){
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Center(child: Text(state.sucess)),
-                  width: 200.0, // Width of the snackbar.
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Color.fromARGB(192, 32, 193, 233),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(60.0),
-                    ),
-                  ),
-                );
-            } else if (state is customerTechnicianListBookButtonClickedFailureActionState){
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Center(child: Text(state.failure)),
-                  width: 200.0, // Width of the snackbar.
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Color.fromARGB(192, 216, 48, 48),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(60.0),
-                    ),
-                  ),
-                );
-            }
-          },
-          builder: (context, state) {
-            // print(state);
-            if (state is CustomerTechnicianListInitState) {
-              List<TechnicianCredential>credentials=state.technicianCredential;
-              int len=state.technicianCredential.length;
-              return ListView.builder(
+      appBar: AppBar(
+        title: Text("Customer Technician List"),
+        backgroundColor: Color.fromRGBO(251, 165, 46, 1), // App bar color
+        actions: [
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              // technicianServiceRequestBloc.add(
+              //     TechnicianServiceRequestCustomerProfileClickedEvent());
+              // Handle profile icon button press
+            },
+          ),
+        ],
+      ),
+      body:
+          BlocConsumer<CustomerTechnicianListBloc, CustomerTechnicianListState>(
+        listenWhen: (previousState, state) {
+          return state is CustomerTechnicianListActionState;
+        },
+        buildWhen: (previousState, state) {
+          return state is! CustomerTechnicianListActionState;
+        },
+        listener: (context, state) {
+          if (state is CustomerTechnicianListErrorActionState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(child: Text(state.error)),
+                width: 200.0, // Width of the snackbar.
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Color.fromARGB(192, 221, 39, 39),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(60.0),
+                ),
+              ),
+            );
+          }
+          if (state
+              is customerTechnicianListBookButtonClickedSucessActionState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(child: Text(state.sucess)),
+                width: 200.0, // Width of the snackbar.
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Color.fromARGB(192, 32, 193, 233),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(60.0),
+                ),
+              ),
+            );
+          } else if (state
+              is customerTechnicianListBookButtonClickedFailureActionState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(child: Text(state.failure)),
+                width: 200.0, // Width of the snackbar.
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Color.fromARGB(192, 216, 48, 48),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(60.0),
+                ),
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          // print(state);
+          if (state is CustomerTechnicianListInitState) {
+            List<TechnicianCredential> credentials = state.technicianCredential;
+            int len = state.technicianCredential.length;
+            return ListView.builder(
               itemCount: len,
               itemBuilder: (context, index) {
                 final contactInfo = credentials[index];
@@ -139,7 +152,10 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
                       contentPadding: EdgeInsets.all(10),
                       title: Text(
                         contactInfo.name,
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color:Color.fromARGB(255, 156, 158, 6)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Color.fromARGB(255, 156, 158, 6)),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,13 +175,21 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
                                       await DateSelection().selectDate(context);
                                   // print(dateAndTime);
                                   print(contactInfo.id);
-                                  String formattedDateTime =DateFormat("yyyy-MM-ddTHH:mm:ss").format(DateTime(dateAndTime.year,
-                                                              dateAndTime.month,
-                                                              dateAndTime.day,
-                                                              dateAndTime.hour,
-                                                              dateAndTime.minute));
-                                 String isoDateString = formattedDateTime + "Z";
-                                  context.read<CustomerTechnicianListBloc>().add(CustomerTechnicianListBookButtonClickedEvent(iso:isoDateString,technicianId: contactInfo.id,notes:"wheel disfunction"));
+                                  String formattedDateTime =
+                                      DateFormat("yyyy-MM-ddTHH:mm:ss").format(
+                                          DateTime(
+                                              dateAndTime.year,
+                                              dateAndTime.month,
+                                              dateAndTime.day,
+                                              dateAndTime.hour,
+                                              dateAndTime.minute));
+                                  String isoDateString =
+                                      formattedDateTime + "Z";
+                                  context.read<CustomerTechnicianListBloc>().add(
+                                      CustomerTechnicianListBookButtonClickedEvent(
+                                          iso: isoDateString,
+                                          technicianId: contactInfo.id,
+                                          notes: "wheel disfunction"));
                                 },
                                 icon: Icon(Icons.book),
                                 label: Text('Book'),
@@ -197,41 +221,69 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
                 );
               },
             );
-            }
-            else{
-              return Center(
-                child: Container(
-                  child:Text(
-                    "NO DATA",
-                    style:TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color:Color.fromARGB(122, 255, 193, 7),
-                    ),
-                    )
+          } else {
+            return Center(
+              child: Container(
+                  child: Text(
+                "NO DATA",
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(122, 255, 193, 7),
                 ),
-              );
-            }
-            
-          },
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
+              )),
+            );
+          }
+        },
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
               icon: Icon(Icons.home),
-              label: 'Home',
+              onPressed: () {
+                final customerTechnicianListBloc =
+                    BlocProvider.of<CustomerTechnicianListBloc>(context);
+                customerTechnicianListBloc
+                    .add(CustomerTechnicianListHomeButtonClickedEvent());
+
+                GoRouter.of(context).pushNamed(
+                  CustomerAppRouteConstant.customerTechnicianStList,
+                );
+              },
             ),
-            BottomNavigationBarItem(
+            IconButton(
               icon: Icon(Icons.refresh),
-              label: 'Refresh',
+              onPressed: () {
+                // final technicianServiceRequestBloc =
+                //     BlocProvider.of<TechnicianServiceRequestBloc>(
+                //         context);
+                // technicianServiceRequestBloc.add(
+                //     TechnicianServiceRequestCustomerProfileClickedEvent());
+
+                // GoRouter.of(context).pushNamed(
+                //   TechnicianAppRouteConstant.technicianServiceRequest,
+                // );
+              },
             ),
-            BottomNavigationBarItem(
+            IconButton(
               icon: Icon(Icons.settings),
-              label: 'Pimp Day',
+              onPressed: () {
+                // final CustomerTechnicianListBloc =
+                //     BlocProvider.of<CustomerTechnicianListBloc>(
+                //         context);
+                // customerTechnicianListBloc.add();
+
+                // technicianProfileBloc
+                //     .add(TechnicianProfileTodoButtonClickedEvent());
+                // Handle todo button functionality here
+              },
             ),
           ],
         ),
-      );
+      ),
+    );
   }
 }
 
@@ -247,4 +299,3 @@ class ContactInfo {
       required this.expertise,
       required this.location});
 }
-

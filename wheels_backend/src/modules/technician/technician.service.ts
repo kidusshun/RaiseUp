@@ -42,42 +42,14 @@ export class TechnicianService {
         })
     }
 
-    getAllTechnician(){
-        return this.prisma.technician.findMany({
-            include:{
-                expertise:true
-            }
-        })
-    }
 
-
-    async editTechnician(userId:number, dto:EditTechnicianDto){
-        let expertises=dto.expertise;
-        for (const expertiseName of expertises){
-            const expertiseData={
-                userId,
-                name:expertiseName
-            }
-            const expertise = await this.prisma.expertise.create({
-                data: expertiseData
-            })
-        }
-        
-
+    editTechnician(userId:number, dto:EditTechnicianDto){
+        console.log(dto);
         
         
-        return await this.prisma.technician.update({
+        return this.prisma.technician.update({
             where:{id:userId},
-            data:{
-                about:dto.about,
-                phone:dto.phone,
-                garage:dto.garage,
-                location:dto.location
-                
-            },
-            include:{
-                expertise:true
-            }
+            data:{...dto}
         })
     }
 

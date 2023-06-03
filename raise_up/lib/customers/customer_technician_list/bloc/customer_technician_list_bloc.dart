@@ -19,33 +19,47 @@ class CustomerTechnicianListBloc
     on<CustomerTechnicianListEvent>((event, emit) {
       // TODO: implement event handler
     });
-  on<CustomerTechnicianListInitEvent>(customerTechnicianListInitEvent);
+    on<CustomerTechnicianListInitEvent>(customerTechnicianListInitEvent);
+    on<CustomerTechnicianListHomeButtonClickedEvent>(
+        customerTechnicianListHomeButtonClickedEvent);
 
-  on<CustomerTechnicianListBookButtonClickedEvent>(customerTechnicianListBookButtonClickedEvent);
+    on<CustomerTechnicianListBookButtonClickedEvent>(
+        customerTechnicianListBookButtonClickedEvent);
   }
 
-  Future<FutureOr<void>> customerTechnicianListInitEvent(CustomerTechnicianListInitEvent event, Emitter<CustomerTechnicianListState> emit) async {
-    dynamic response= await TechnicianCredentialRepositoryImpl().getTechnicians();
-    if (response[0].runtimeType!=String){
-      emit(CustomerTechnicianListInitState(technicianCredential:response));
+  Future<FutureOr<void>> customerTechnicianListInitEvent(
+      CustomerTechnicianListInitEvent event,
+      Emitter<CustomerTechnicianListState> emit) async {
+    dynamic response =
+        await TechnicianCredentialRepositoryImpl().getTechnicians();
+    if (response[0].runtimeType != String) {
+      emit(CustomerTechnicianListInitState(technicianCredential: response));
+    } else {
+      emit(CustomerTechnicianListErrorActionState(error: response[0]));
     }
-    else{
-      emit(CustomerTechnicianListErrorActionState(error:response[0]));
-    }
-    
   }
 
-  Future<FutureOr<void>> customerTechnicianListBookButtonClickedEvent(CustomerTechnicianListBookButtonClickedEvent event, Emitter<CustomerTechnicianListState> emit) async {
-    CustomerServiceRequest serviceRequest=CustomerServiceRequest(technicianId:event.technicianId,notes:event.notes,isoDateString:event.iso);
-    String response=await CustomerDateSeclectionRepositoryImpl().setDate(serviceRequest);
-    if (response=="Successfully Recoreded!"){
-      emit(customerTechnicianListBookButtonClickedSucessActionState(sucess:response));
+  Future<FutureOr<void>> customerTechnicianListBookButtonClickedEvent(
+      CustomerTechnicianListBookButtonClickedEvent event,
+      Emitter<CustomerTechnicianListState> emit) async {
+    CustomerServiceRequest serviceRequest = CustomerServiceRequest(
+        technicianId: event.technicianId,
+        notes: event.notes,
+        isoDateString: event.iso);
+    String response =
+        await CustomerDateSeclectionRepositoryImpl().setDate(serviceRequest);
+    if (response == "Successfully Recoreded!") {
+      emit(customerTechnicianListBookButtonClickedSucessActionState(
+          sucess: response));
+    } else {
+      emit(customerTechnicianListBookButtonClickedFailureActionState(
+          failure: response));
     }
-    else{
-      emit(customerTechnicianListBookButtonClickedFailureActionState(failure:response));
-    }
-    
+  }
 
-
+  FutureOr<void> customerTechnicianListHomeButtonClickedEvent(
+      CustomerTechnicianListHomeButtonClickedEvent event,
+      Emitter<CustomerTechnicianListState> emit) {
+    emit(CustomerTechnicianListNavigateToHomeState());
   }
 }

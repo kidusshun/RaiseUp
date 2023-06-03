@@ -18,21 +18,22 @@ export class AppointmentsService {
     
     async getAppointments(userId:number){
         return await this.prisma.appointment.findMany({
-            where:{technicianId:userId},
-            include:{
-                customer:true
-            }
+            where:{technicianId:userId}
         })
+    
     }
-    async getServiceRequestByStatusPending(userId:number){
-        return await this.prisma.serviceRequest.findMany({
-            where:{technicianId:userId,
-            status:"pending"},
-            include:{
-                customer:true
-            }
-        })
-    }
+
+    async getAppointmentsInPast(userId:number,requestTime: Date){
+    return this.prisma.appointment.findMany({
+      where: {
+        technicianId:userId,
+        time: {
+          lte: requestTime,
+        },
+      },
+    });
+  }
+    
     async editAppointments(userId:number, dto:EditAppointmentDto){
         const appointmentId=dto.appointmentId
         delete dto.appointmentId

@@ -23,6 +23,8 @@ class TechnicianSignupBloc
         technicianSignupConfirmationPasswordInputEvent);
     on<TechnicianSignupSignupButtonClickedEvent>(
         technicianSignupSignupButtonClickedEvent);
+    on<TechnicianSignupLogInButtonClickedEvent>(
+        technicianSignupLogInButtonClickedEvent);
   }
 
   FutureOr<void> technicianSignupEmailInputEvent(
@@ -92,4 +94,10 @@ class TechnicianSignupBloc
   }
 
   static of(BuildContext context) {}
+
+  FutureOr<void> technicianSignupLogInButtonClickedEvent(
+      TechnicianSignupLogInButtonClickedEvent event,
+      Emitter<TechnicianSignupState> emit) {
+    emit(TechnicianSignUpNavigateToLoginState());
+  }
 }

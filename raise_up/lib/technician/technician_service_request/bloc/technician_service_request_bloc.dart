@@ -17,31 +17,42 @@ class TechnicianServiceRequestBloc
     extends Bloc<TechnicianServiceRequestEvent, TechnicianServiceRequestState> {
   TechnicianServiceRequestBloc() : super(TechnicianServiceRequestInitial()) {
     on<TechnicianAppointmentSetEvent>(technicianAppointmentSetEvent);
+    on<TechnicianServiceRequestProfileButtonClicked>(
+        technicianServiceRequestProfileButtonClicked);
     on<TechnicianAppointmentInitialEvent>(technicianAppointmentInitialEvent);
   }
 
-  Future<FutureOr<void>> technicianAppointmentSetEvent(TechnicianAppointmentSetEvent event, Emitter<TechnicianServiceRequestState> emit) async {
+  Future<FutureOr<void>> technicianAppointmentSetEvent(
+      TechnicianAppointmentSetEvent event,
+      Emitter<TechnicianServiceRequestState> emit) async {
     emit(TechnicianAppointmentLoadingActionState());
-    String response =await TechnicianAppointmentRepositoryimpl().createAppointment(event.appointment);
-    // print(response);
-    if (response=="Successfully Appointed!"){
+    String response = await TechnicianAppointmentRepositoryimpl()
+        .createAppointment(event.appointment);
+    print(response);
+    if (response == "Successfully Appointed!") {
       print("hi");
       emit(TechnicianAppointmentSuccessActionState(sucess: response));
-    }else{
+    } else {
       emit(TechnicianAppointmentUnSuccessfulActionState(failure: response));
     }
-    
   }
 
-  Future<FutureOr<void>> technicianAppointmentInitialEvent(TechnicianAppointmentInitialEvent event, Emitter<TechnicianServiceRequestState> emit) async {
-
-    dynamic response= await  TechnicianCustomerServiceRequestRepositoryImpl().getCustomers();
-    if (response[0].runtimeType!=String){
+  Future<FutureOr<void>> technicianAppointmentInitialEvent(
+      TechnicianAppointmentInitialEvent event,
+      Emitter<TechnicianServiceRequestState> emit) async {
+    dynamic response =
+        await TechnicianCustomerServiceRequestRepositoryImpl().getCustomers();
+    if (response[0].runtimeType != String) {
       // print("cc");
-      emit(TechnicianServiceRequestIntState(customerCredential:response));
+      emit(TechnicianServiceRequestIntState(customerCredential: response));
+    } else {
+      emit(TechnicianServiceRequestErrorActionState(error: response[0]));
     }
-    else{
-      emit(TechnicianServiceRequestErrorActionState(error:response[0]));
-    }
+  }
+
+  FutureOr<void> technicianServiceRequestProfileButtonClicked(
+      TechnicianServiceRequestProfileButtonClicked event,
+      Emitter<TechnicianServiceRequestState> emit) {
+    emit(TechnicianServiceRequestNavigateToProfileState());
   }
 }

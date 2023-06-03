@@ -6,7 +6,7 @@ export class EditTechnicianDto {
   about: string;
   
   @IsOptional()
-  expertise: string[];
+  expertises: string[];
   
   @IsOptional()
   @IsString()

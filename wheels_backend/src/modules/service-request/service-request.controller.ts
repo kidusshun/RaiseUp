@@ -7,7 +7,6 @@ import { EditServiceRequestDto } from './dto/edit-service-request.dto';
 import { Roles } from '../authorization/roles.decorator';
 import { Role } from '../authorization/enums';
 import { ManageServiceRequestDto } from './dto/manage-service-request.dto';
-import { GetServiceRequestDto } from './dto/get-service-by-status.dto';
 
 @UseGuards(CustomerGuard)
 @Controller('service-request')
@@ -28,9 +27,23 @@ export class ServiceRequestController {
         return this.serviceRequestService.getServiceRequest(userId);
     }
 
+    @Get('past')
+    @Roles(Role.CUSTOMER)
+    async getAppointmentsInPast(@GetUser('id') userId:number){
+        const requestTime = new Date();
+        this.serviceRequestService.getAppointmentsInPast(userId,requestTime);
+    }
+
+    @Get('appointments')
+    @Roles(Role.ADMIN, Role.CUSTOMER)
+    getAppointments(@GetUser('id') userId:number){
+        const requestTime = new Date();
+        return this.serviceRequestService.getAppointments(userId,requestTime);
+    }
+
     @Roles(Role.CUSTOMER)
     @Get('getServiceRequestByStatus')
-    getServiceRequestByStatus(@GetUser('id') userId:number,@Body() dto:GetServiceRequestDto){
+    getServiceRequestByStatus(@GetUser('id') userId:number,@Body() dto:ManageServiceRequestDto){
         return this.serviceRequestService.getServiceRequestByStatus(userId,dto);
     }
 
@@ -41,7 +54,7 @@ export class ServiceRequestController {
     }
     
     @Roles(Role.CUSTOMER,Role.ADMIN)
-    @Patch('EditServiceRequestsForCustomer')
+    @Patch()
     editServiceRequest(@GetUser('id') userId:number,@Body() dto:EditServiceRequestDto){
         console.log(dto);
         return this.serviceRequestService.editServiceRequest(userId,dto);

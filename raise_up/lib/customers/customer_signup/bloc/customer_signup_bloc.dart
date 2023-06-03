@@ -9,8 +9,9 @@ import '../model/customer_credential_model.dart';
 part 'customer_signup_event.dart';
 part 'customer_signup_state.dart';
 
-class CustomerSignupBloc extends Bloc<CustomerSignupEvent, CustomerSignupState> {
-  Map<String,String> customerCredentials={};
+class CustomerSignupBloc
+    extends Bloc<CustomerSignupEvent, CustomerSignupState> {
+  Map<String, String> customerCredentials = {};
   CustomerSignupBloc() : super(CustomerSignupInitial()) {
     on<CustomerSignupEvent>((event, emit) {
       // TODO: implement event handler
@@ -22,21 +23,29 @@ class CustomerSignupBloc extends Bloc<CustomerSignupEvent, CustomerSignupState> 
         customerSignupConfirmationPasswordInputEvent);
     on<CustomerSignupSignupButtonClickedEvent>(
         customerSignupSignupButtonClickedEvent);
+    on<CustomerSignupLogInButtonClickedEvent>(
+        customerSignupLogInButtonClickedEvent);
   }
 
-  FutureOr<void> customerSignupEmailInputEvent(CustomerSignupEmailInputEvent event, Emitter<CustomerSignupState> emit) {
+  FutureOr<void> customerSignupEmailInputEvent(
+      CustomerSignupEmailInputEvent event, Emitter<CustomerSignupState> emit) {
     customerCredentials["email"] = event.email;
   }
 
-  FutureOr<void> customerSignupNameInputEvent(CustomerSignupNameInputEvent event, Emitter<CustomerSignupState> emit) {
+  FutureOr<void> customerSignupNameInputEvent(
+      CustomerSignupNameInputEvent event, Emitter<CustomerSignupState> emit) {
     customerCredentials["name"] = event.name;
   }
 
-  FutureOr<void> customerSignupPasswordInputEvent(CustomerSignupPasswordInputEvent event, Emitter<CustomerSignupState> emit) {
+  FutureOr<void> customerSignupPasswordInputEvent(
+      CustomerSignupPasswordInputEvent event,
+      Emitter<CustomerSignupState> emit) {
     customerCredentials["password"] = event.password;
   }
 
-  FutureOr<void> customerSignupConfirmationPasswordInputEvent(CustomerSignupConfirmationPasswordInputEvent event, Emitter<CustomerSignupState> emit) {
+  FutureOr<void> customerSignupConfirmationPasswordInputEvent(
+      CustomerSignupConfirmationPasswordInputEvent event,
+      Emitter<CustomerSignupState> emit) {
     customerCredentials["confirmationPassword"] = event.confirmationPassword;
     // print(customerCredentials["confirmationPassword"]);
     // print(customerCredentials["password"]);
@@ -50,7 +59,9 @@ class CustomerSignupBloc extends Bloc<CustomerSignupEvent, CustomerSignupState> 
     }
   }
 
-  FutureOr<void> customerSignupSignupButtonClickedEvent(CustomerSignupSignupButtonClickedEvent event, Emitter<CustomerSignupState> emit) async {
+  FutureOr<void> customerSignupSignupButtonClickedEvent(
+      CustomerSignupSignupButtonClickedEvent event,
+      Emitter<CustomerSignupState> emit) async {
     if (customerCredentials["confirmationPassword"] ==
         customerCredentials["password"]) {
       // print("hi");
@@ -77,5 +88,11 @@ class CustomerSignupBloc extends Bloc<CustomerSignupEvent, CustomerSignupState> 
             failure: "Unknown Problem occured please try again later"));
       }
     }
+  }
+
+  FutureOr<void> customerSignupLogInButtonClickedEvent(
+      CustomerSignupLogInButtonClickedEvent event,
+      Emitter<CustomerSignupState> emit) {
+    emit(CustomerSignupNavigateToLogInState());
   }
 }

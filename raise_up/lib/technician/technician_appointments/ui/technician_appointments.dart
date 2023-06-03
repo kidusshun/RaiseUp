@@ -4,10 +4,11 @@ import 'package:raise_up/technician/technician_service_request/model/technician_
 import 'package:raise_up/widgets/timeselection.dart';
 import 'package:raise_up/technician/technician_profile/ui/technician_profile.dart';
 import 'package:intl/intl.dart';
+import 'package:go_router/go_router.dart';
+import 'package:raise_up/technician/app_route_constatnts.dart';
 
 import '../bloc/technician_appointments_bloc.dart';
 import '../model/technician_appointments_model.dart';
-
 
 class TechnicianStAppointment extends StatelessWidget {
   const TechnicianStAppointment({super.key});
@@ -16,11 +17,10 @@ class TechnicianStAppointment extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TechnicianAppointmentsBloc(),
-      child:TechnicianAppointment(),
+      child: TechnicianAppointment(),
     );
   }
 }
-
 
 class TechnicianAppointment extends StatefulWidget {
   const TechnicianAppointment({Key? key}) : super(key: key);
@@ -33,68 +33,79 @@ class TechnicianAppointment extends StatefulWidget {
 class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
   // final TechnicianServiceRequestBloc technicianServiceRequestBloc =
   //     TechnicianServiceRequestBloc();
-    @override
+  @override
   void initState() {
     super.initState();
-    BlocProvider.of<TechnicianAppointmentsBloc>(context).add(TechnicianAppointInitialEvent());
+    BlocProvider.of<TechnicianAppointmentsBloc>(context)
+        .add(TechnicianAppointInitialEvent());
   }
+
   @override
   Widget build(BuildContext context) {
     // Hard-coded sample data for contacts
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Service Requests"),
-          backgroundColor: Color.fromARGB(255, 67, 139, 149),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.person),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        body: BlocConsumer<TechnicianAppointmentsBloc, TechnicianAppointmentsState>(
-          listenWhen: (previousState, state) {
-             return state is TechnicianAppointmentsActionState;
-          },
+      appBar: AppBar(
+        title: Text("Technician Appointments"),
+        backgroundColor: Color.fromARGB(255, 67, 139, 149),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              final technicianAppointmentsBloc =
+                  BlocProvider.of<TechnicianAppointmentsBloc>(context);
+              technicianAppointmentsBloc
+                  .add(TechnicianAppointmentProfileButtonClickedEvent());
 
-          buildWhen: (previousState, state) {
-             return state is! TechnicianAppointmentsActionState;
-          },
-          listener: (context, state) {
-            // TODO: implement listener
-            if (state is TechnicianAppointmentsLoadingActionState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Center(child: Text("Loading...")),
-                  width: 200.0, // Width of the snackbar.
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Color.fromARGB(192, 17, 160, 165),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(60.0),
-                    ),
-                  ),
-                );
-              }
-              else if (state is TechnicianAppointmentsErrorActionState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Center(child: Text(state.error)),
-                  width: 200.0, // Width of the snackbar.
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Color.fromARGB(192, 236, 59, 36),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(60.0),
-                    ),
-                  ),
-                );
-              }
-          },
-          builder: (context, state) {
-            // print("hi");
-            if (state is TechnicianAppointmentsInitState){
-              List<TechnicianAppointments> appointments=state.customerCredential;
-              // print(appointments.length);
-              return Container(
+              GoRouter.of(context).pushNamed(
+                TechnicianAppRouteConstant.technicianProfile,
+              );
+            },
+          ),
+        ],
+      ),
+      body:
+          BlocConsumer<TechnicianAppointmentsBloc, TechnicianAppointmentsState>(
+        listenWhen: (previousState, state) {
+          return state is TechnicianAppointmentsActionState;
+        },
+        buildWhen: (previousState, state) {
+          return state is! TechnicianAppointmentsActionState;
+        },
+        listener: (context, state) {
+          // TODO: implement listener
+          if (state is TechnicianAppointmentsLoadingActionState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(child: Text("Loading...")),
+                width: 200.0, // Width of the snackbar.
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Color.fromARGB(192, 17, 160, 165),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(60.0),
+                ),
+              ),
+            );
+          } else if (state is TechnicianAppointmentsErrorActionState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(child: Text(state.error)),
+                width: 200.0, // Width of the snackbar.
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Color.fromARGB(192, 236, 59, 36),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(60.0),
+                ),
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          // print("hi");
+          if (state is TechnicianAppointmentsInitState) {
+            List<TechnicianAppointments> appointments =
+                state.customerCredential;
+            // print(appointments.length);
+            return Container(
               child: ListView.builder(
                 itemCount: appointments.length,
                 itemBuilder: (context, index) {
@@ -173,7 +184,8 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
                                     Icon(Icons.schedule,
                                         color: Colors.teal[300]),
                                     // Text(DateFormat('dd-MM-yy').format(contactInfo.date)),
-                                    Text(DateFormat('h:mm a').format(contactInfo.time))
+                                    Text(DateFormat('h:mm a')
+                                        .format(contactInfo.time))
                                   ],
                                 ),
                                 Row(
@@ -182,10 +194,10 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
                                     Icon(Icons.calendar_month,
                                         color: Colors.teal[300]),
                                     // Text(DateFormat('dd-MM-yy').format(contactInfo.date)),
-                                    Text(DateFormat('dd-MM-yy').format(contactInfo.time))
+                                    Text(DateFormat('dd-MM-yy')
+                                        .format(contactInfo.time))
                                   ],
                                 ),
-                                
                               ],
                             ),
                           ),
@@ -196,28 +208,59 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
                 },
               ),
             );
-            }
-            else{
-              return Container();
-            }
-          },
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
+          } else {
+            return Container();
+          }
+        },
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
               icon: Icon(Icons.home),
-              label: 'Home',
+              onPressed: () {
+                final technicianAppointmentsBloc =
+                    BlocProvider.of<TechnicianAppointmentsBloc>(context);
+                technicianAppointmentsBloc
+                    .add(TechnicianAppointmentHomeButtonClickedEvent());
+
+                GoRouter.of(context).pushNamed(
+                  TechnicianAppRouteConstant.technicianServiceRequest,
+                );
+              },
             ),
-            BottomNavigationBarItem(
+            IconButton(
               icon: Icon(Icons.refresh),
-              label: 'Refresh',
+              onPressed: () {
+                // final technicianServiceRequestBloc =
+                //     BlocProvider.of<TechnicianServiceRequestBloc>(context);
+                // technicianServiceRequestBloc
+                //     .add(TechnicianServiceRequestRefreshButtonClickedEvent());
+
+                // technicianProfileBloc
+                //     .add(TechnicianProfileTodoButtonClickedEvent());
+                // Handle todo button functionality here
+              },
             ),
-            BottomNavigationBarItem(
+            IconButton(
               icon: Icon(Icons.settings),
-              label: 'To Do',
+              onPressed: () {
+                final technicianAppointmentsBloc =
+                    BlocProvider.of<TechnicianAppointmentsBloc>(context);
+                technicianAppointmentsBloc
+                    .add(TechnicianAppointmentToDoButtonClickedEvent());
+                GoRouter.of(context).pushNamed(
+                  TechnicianAppRouteConstant.technicianAppointments,
+                );
+                // technicianProfileBloc
+                //     .add(TechnicianProfileTodoButtonClickedEvent());
+                // Handle todo button functionality here
+              },
             ),
           ],
         ),
+      ),
     );
   }
 }

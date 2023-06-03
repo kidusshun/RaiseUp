@@ -16,6 +16,7 @@ export class AppointmentsController {
     @Post('create')
     @Roles(Role.ADMIN, Role.TECHNICIAN)
     createAppointments(@GetUser('id') userId:number, @Body() dto:createAppointmentDto){
+
         return this.appointmentsService.createAppointments(userId,dto);
     }
     
@@ -25,15 +26,18 @@ export class AppointmentsController {
         
         return this.appointmentsService.getAppointments(userId);
     }
-    @Roles(Role.TECHNICIAN)
-    @Get('pending')
-    getServiceRequestByStatusPending(@GetUser('id') userId:number){
-        return this.appointmentsService.getServiceRequestByStatusPending(userId);
+    @Get('past')
+    @Roles(Role.ADMIN, Role.TECHNICIAN)
+    async getAppointmentsInPast(@GetUser('id') userId:number){
+        const requestTime = new Date();
+        this.appointmentsService.getAppointmentsInPast(userId,requestTime);
     }
+
 
     @Patch()
     @Roles(Role.ADMIN, Role.TECHNICIAN)
     editAppointments(@GetUser('id') userId:number,@Body() dto:EditAppointmentDto){
+        
         return this.appointmentsService.editAppointments(userId,dto);
     }
 
@@ -41,6 +45,7 @@ export class AppointmentsController {
     @Roles(Role.ADMIN, Role.TECHNICIAN)
     deleteAppointments(@GetUser('id') userId:number, @Body() appointmentId:{appointmentId:number}){
         console.log(appointmentId);
+        
         return this.appointmentsService.deleteAppointments(userId,appointmentId);
     }
 }

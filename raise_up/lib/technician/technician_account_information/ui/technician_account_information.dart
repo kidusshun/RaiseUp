@@ -29,7 +29,7 @@ class _MyAppState extends State<TechnicianAccountInformation> {
       ],
       child: MaterialApp(
         home: PixelPerfect(
-          assetPath: "assets/images/pixel-technician-account-information.jpg",
+          // assetPath: "assets/images/pixel-technician-account-information.jpg",
           child: Scaffold(
             appBar: AppBar(
               title: Text('Account Information'),
@@ -90,31 +90,34 @@ class _MyAppState extends State<TechnicianAccountInformation> {
                         GestureButton(name: "Suspenssion & Sterring"),
                         GestureButton(name: "Break"),
                       ]),
-                      BlocConsumer<TechnicianAccountInformationBloc, TechnicianAccountInformationState>(
+                      BlocConsumer<TechnicianAccountInformationBloc,
+                          TechnicianAccountInformationState>(
                         listener: (context, state) {
                           // TODO: implement listener
                           if (state is TechnicianInputSucessActionState) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Center(child: Text(state.sucess)),
-                              width: 200.0, // Width of the snackbar.
-                              behavior: SnackBarBehavior.floating,
-                              backgroundColor: Color.fromARGB(192, 17, 160, 165),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(60.0),
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Center(child: Text(state.sucess)),
+                                width: 200.0, // Width of the snackbar.
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor:
+                                    Color.fromARGB(192, 17, 160, 165),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(60.0),
                                 ),
                               ),
                             );
-                          }
-                          else if (state is TechnicianInputFailureActionState) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Center(child: Text(state.failure)),
-                              width: 200.0, // Width of the snackbar.
-                              behavior: SnackBarBehavior.floating,
-                              backgroundColor: Color.fromARGB(192, 236, 59, 36),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(60.0),
+                          } else if (state
+                              is TechnicianInputFailureActionState) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Center(child: Text(state.failure)),
+                                width: 200.0, // Width of the snackbar.
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor:
+                                    Color.fromARGB(192, 236, 59, 36),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(60.0),
                                 ),
                               ),
                             );
@@ -131,13 +134,21 @@ class _MyAppState extends State<TechnicianAccountInformation> {
                                   height: 30,
                                 ),
                                 Container(
+                                  key: Key('phone'),
                                   padding: EdgeInsets.fromLTRB(0, 0, 35, 0),
                                   child: TextFormField(
-                                      onChanged: (value) {context.read<TechnicianAccountInformationBloc>().add(TechnicianPhoneNumberInputEvent(phoneNumber: value));},
+                                      onChanged: (value) {
+                                        context
+                                            .read<
+                                                TechnicianAccountInformationBloc>()
+                                            .add(
+                                                TechnicianPhoneNumberInputEvent(
+                                                    phoneNumber: value));
+                                      },
                                       validator: (value) {
                                         if (value?.isEmpty ?? true) {
                                           return 'Please Enter Your Phone Number';
-                                        }else{
+                                        } else {
                                           return null;
                                         }
                                       },
@@ -151,9 +162,16 @@ class _MyAppState extends State<TechnicianAccountInformation> {
                                   height: 50,
                                 ),
                                 Container(
+                                  key: Key('garage'),
                                   padding: EdgeInsets.fromLTRB(0, 0, 35, 0),
                                   child: TextFormField(
-                                      onChanged: (value) {context.read<TechnicianAccountInformationBloc>().add(TechnicianGarageNameInputEvent(garageName: value));},
+                                      onChanged: (value) {
+                                        context
+                                            .read<
+                                                TechnicianAccountInformationBloc>()
+                                            .add(TechnicianGarageNameInputEvent(
+                                                garageName: value));
+                                      },
                                       validator: (value) {
                                         if (value?.isEmpty ?? true) {
                                           return 'Please Enter Your Garage Name';
@@ -169,13 +187,21 @@ class _MyAppState extends State<TechnicianAccountInformation> {
                                   height: 50,
                                 ),
                                 Container(
+                                  key: Key('location'),
                                   padding: EdgeInsets.fromLTRB(0, 0, 35, 0),
                                   child: TextFormField(
-                                      onChanged: (value) {context.read<TechnicianAccountInformationBloc>().add(TechnicianGarageLocationInputEvent(garageLocation: value));},
+                                      onChanged: (value) {
+                                        context
+                                            .read<
+                                                TechnicianAccountInformationBloc>()
+                                            .add(
+                                                TechnicianGarageLocationInputEvent(
+                                                    garageLocation: value));
+                                      },
                                       validator: (value) {
                                         if (value?.isEmpty ?? true) {
                                           return 'Please Enter Your Garage Location';
-                                        }else{
+                                        } else {
                                           return null;
                                         }
                                       },
@@ -192,7 +218,11 @@ class _MyAppState extends State<TechnicianAccountInformation> {
                                       if (_formKey.currentState?.validate() ??
                                           false) {}
                                       // print("hi");
-                                      context.read<TechnicianAccountInformationBloc>().add(TechnicianAccountInformationSubmitButtonEvent());
+                                      context
+                                          .read<
+                                              TechnicianAccountInformationBloc>()
+                                          .add(
+                                              TechnicianAccountInformationSubmitButtonEvent());
                                     },
                                     style: ButtonStyle(
                                       backgroundColor:

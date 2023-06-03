@@ -2,8 +2,8 @@ part of 'customer_signup_bloc.dart';
 
 @immutable
 abstract class CustomerSignupState {}
-abstract class CustomerSignupActionState extends CustomerSignupState {}
 
+abstract class CustomerSignupActionState extends CustomerSignupState {}
 
 class CustomerSignupInitial extends CustomerSignupState {}
 
@@ -13,6 +13,8 @@ class CustomerSignUpSucessActionState extends CustomerSignupActionState {
   String sucess;
   CustomerSignUpSucessActionState({required this.sucess});
 }
+
+class CustomerSignupNavigateToLogInState extends CustomerSignupActionState {}
 
 class CustomerSignUpfailedActionState extends CustomerSignupActionState {
   String failure;
