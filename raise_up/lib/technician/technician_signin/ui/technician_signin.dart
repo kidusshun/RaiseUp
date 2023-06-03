@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixel_perfect/pixel_perfect.dart';
 import 'package:go_router/go_router.dart';
 import 'package:raise_up/technician/app_route_constatnts.dart';
+import '../../../landing/app_route_customers_constatnts.dart';
 import '../bloc/technician_signin_bloc.dart';
 
 class TechnicianSignin extends StatefulWidget {
@@ -109,7 +110,7 @@ class _TechnicianSigninPageState extends State<TechnicianSignin> {
                             ),
                           );
                           GoRouter.of(context).pushNamed(
-                                  TechnicianAppRouteConstant.technicianServiceRequest,);
+                                  LandingAppRouteConstant.technicianServiceRequest,);
 
                         } else if (state is TechnicianSigninFailedActionState) {
                           ScaffoldMessenger.of(context).showSnackBar(

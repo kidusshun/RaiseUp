@@ -1,10 +1,10 @@
-import {IsNotEmpty,IsString,IsDate, IsInt, IsOptional} from 'class-validator';
+import {IsNotEmpty,IsString,IsDateString, IsInt, IsOptional} from 'class-validator';
 export class EditServiceRequestDto{
     @IsInt()
     @IsNotEmpty()
     serviceId:number;
     
-    @IsDate()
+    @IsDateString()
     @IsOptional()
     preferredDate?: Date;
     

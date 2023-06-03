@@ -10,24 +10,7 @@ import 'package:raise_up/technician/technician_service_request/ui/technician_ser
 class MockTechnicianServiceRequestBloc extends Mock
     implements TechnicianServiceRequestBloc {}
 
-class MockTechnicianAppointmentRepository extends Mock
-    implements TechnicianAppointmentRepository {
-  @override
-  Future<String> createAppointment(TechnicianAppointment appointment) {
-    return Future.value("success"); // Replace with your desired implementation
-  }
-}
-
 void main() {
-  final mockAppointmentRepository = MockTechnicianAppointmentRepository();
-
-  // Create a sample appointment
-  // final appointment = TechnicianAppointment(
-  //   customer_id: 1,
-  //   notes: "Engine Defect",
-  //   time: TimeOfDay.now(),
-  // );
-
   final bloc = TechnicianServiceRequestBloc();
   group('TechnicianServiceRequest', () {
     late TechnicianServiceRequestBloc technicianServiceRequestBloc;

@@ -29,9 +29,9 @@ export class ServiceRequestController {
     }
 
     @Roles(Role.CUSTOMER)
-    @Get('getServiceRequestByStatus')
-    getServiceRequestByStatus(@GetUser('id') userId:number,@Body() dto:GetServiceRequestDto){
-        return this.serviceRequestService.getServiceRequestByStatus(userId,dto);
+    @Get('pending')
+    getServiceRequestByStatus(@GetUser('id') userId:number){
+        return this.serviceRequestService.getServiceRequestByStatus(userId);
     }
 
     @Get('past')

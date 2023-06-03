@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import '../../../landing/app_route_customers_constatnts.dart';
 import '../bloc/technician_profile_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:raise_up/technician/app_route_constatnts.dart';
@@ -202,7 +203,7 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
             icon: Icon(Icons.home),
             onPressed: () {
               GoRouter.of(context).pushNamed(
-                TechnicianAppRouteConstant.technicianServiceRequest,
+                LandingAppRouteConstant.technicianServiceRequest,
               );
             },
           ),
@@ -210,7 +211,7 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
             icon: Icon(Icons.build),
             onPressed: () {
               GoRouter.of(context).pushNamed(
-                TechnicianAppRouteConstant.technicianAppointments,
+                LandingAppRouteConstant.technicianAppointments,
               );
             },
           ),

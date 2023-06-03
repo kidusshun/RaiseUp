@@ -3,24 +3,30 @@ import 'package:flutter/material.dart';
 class CustomerAppointments {
   DateTime time;
   String name;
-  int customer_id;
+  int technicianId;
+  String phone;
+  String location;
+  int appointmentId;
 
   CustomerAppointments(
-      {required this.time, required this.name, required this.customer_id});
+      {required this.time, required this.name, required this.technicianId,required this.location,required this.phone,required this.appointmentId});
 
   Map<String, dynamic> toJson() {
     return {
       'time': time,
       'notes': name,
-      'customerId': customer_id,
+      'technicianId': technicianId,
     };
   }
 
   factory CustomerAppointments.fromJson(Map<String, dynamic> json) {
     return CustomerAppointments(
-      name: json['customer']['name'],
+      name: json['technician']['name'],
       time: DateTime.parse(json['time']),
-      customer_id: json['customer']['id'],
+      technicianId: json['technician']['id'],
+      phone: json['technician']['phone'],
+      location: json['technician']['location'],
+      appointmentId: json['id']
     );
   }
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pixel_perfect/pixel_perfect.dart';
+
+import '../app_route_customers_constatnts.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -17,154 +20,88 @@ class _LandingPageState extends State<LandingPage> {
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: PixelPerfect(
-          assetPath: 'assets/images/pixel_customer-login.jpg',
-          child: CurlyBackgroundPage(
-            backgroundImage: Container(
-              child: Column(
-                children: [
-                  ClipPath(
-                    clipper: WaveClipper(),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          //colorFilter: ColorFilter.mode(Color(0xE3EC9F6F),BlendMode.colorBurn),
-                          image: AssetImage("assets/images/wheel.jpg"),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      width: 411.0,
-                      height: 366.0,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 185.0,
-                          ),
-                          Text(
-                            "Wheels  ",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                              fontSize: 32.0,
-                              fontFamily: "SfProDisplay",
-                              letterSpacing: 3.0,
-                            ),
-                          ),
-                          SizedBox(height: 1.5),
-                          Text(
-                            "Keeping You On The Road",
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 17.0,
-                              fontFamily: "SfUiTextRegular",
-                              letterSpacing: 0.2,
-                            ),
-                          ),
-                        ],
+        child: CurlyBackgroundPage(
+          backgroundImage: Container(
+            child: Column(
+              children: [
+                ClipPath(
+                  clipper: WaveClipper(),
+                  child: Container(
+                    key: Key("background image"),
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        //colorFilter: ColorFilter.mode(Color(0xE3EC9F6F),BlendMode.colorBurn),
+                        image: AssetImage("assets/images/wheel.jpg"),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            child: Container(
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(height: 50.0),
-                          //Email Input
-
-                          //Button
-                          SizedBox(
-                            width: 323.0,
-                            height: 50.0,
-                            child: TextButton(
-                              onPressed: () {
-                                if (_formKey.currentState?.validate() ??
-                                    false) {
-                                  return;
-                                }
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Color(0xFF38E929)),
-                                foregroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.white),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                ),
-                              ),
-                              child: Text(
-                                'CUSTOMER',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.2,
-                                ),
-                              ),
-                            ),
+                    width: 411.0,
+                    height: 366.0,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 185.0,
+                        ),
+                        Text(
+                          "Wheels  ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                            fontSize: 32.0,
+                            fontFamily: "SfProDisplay",
+                            letterSpacing: 3.0,
                           ),
-                          SizedBox(
-                            height: 50,
+                        ),
+                        SizedBox(height: 1.5),
+                        Text(
+                          "Keeping You On The Road",
+                          style: TextStyle(
+                            color: Color.fromARGB(225, 255, 255, 255),
+                            fontSize: 19.0,
+                            fontFamily: "SfUiTextRegular",
+                            letterSpacing: 0.2,
                           ),
-                          SizedBox(
-                            width: 323.0,
-                            height: 50.0,
-                            child: TextButton(
-                              onPressed: () {
-                                if (_formKey.currentState?.validate() ??
-                                    false) {
-                                  return;
-                                }
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Color.fromARGB(0, 255, 255, 255)),
-                                foregroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.white),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                      side: const BorderSide(
-                                          width: 2,
-                                          color: Color.fromARGB(
-                                              255, 38, 242, 205))),
-                                ),
-                              ),
-                              child: Text(
-                                'Technician',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.2,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
+          child: Container(
+              child: Column(mainAxisSize: MainAxisSize.max, children: [
+            ElevatedButton(
+              onPressed: () {
+                GoRouter.of(context)
+                    .pushNamed(LandingAppRouteConstant.customerSignUp);
+              },
+              child: Text("Customer", style: TextStyle(fontSize: 20)),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 12.0),
+                primary: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+            ),
+            SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                GoRouter.of(context)
+                    .pushNamed(LandingAppRouteConstant.technicianSignUp);
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 12.0),
+                primary: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+              child: Text("Technician", style: TextStyle(fontSize: 20)),
+            ),
+            SizedBox(height: 1000)
+          ])),
         ),
       ),
     );

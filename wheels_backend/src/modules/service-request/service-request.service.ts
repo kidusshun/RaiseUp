@@ -41,10 +41,11 @@ export class ServiceRequestService {
         })
     }
 
-    async getServiceRequestByStatus(userId:number,dto:GetServiceRequestDto){
+    async getServiceRequestByStatus(userId:number){
         return await this.prisma.serviceRequest.findMany({
             where:{customerId:userId,
-            status:dto.status}
+            status:"pending"},
+            include:{technician:true}
         })
     }
     async getServiceRequestForTechnician(userId:number){

@@ -32,7 +32,10 @@ class CustomerTechnicianListBloc
       Emitter<CustomerTechnicianListState> emit) async {
     dynamic response =
         await TechnicianCredentialRepositoryImpl().getTechnicians();
-    if (response[0].runtimeType != String) {
+    if (response.length==0){
+      emit(TechnicianListNoDataState());
+    }
+    else if (response[0].runtimeType != String) {
       emit(CustomerTechnicianListInitState(technicianCredential: response));
     } else {
       emit(CustomerTechnicianListErrorActionState(error: response[0]));

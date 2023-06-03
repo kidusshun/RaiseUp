@@ -3,6 +3,7 @@ import 'package:pixel_perfect/pixel_perfect.dart';
 import 'package:raise_up/widgets/gestureDetectorButton.dart';
 import 'package:raise_up/widgets/selectionButton.dart';
 import 'package:go_router/go_router.dart';
+import '../../../landing/app_route_customers_constatnts.dart';
 import '../bloc/technician_account_information_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:raise_up/technician/app_route_constatnts.dart';
@@ -221,7 +222,7 @@ class _MyAppState extends State<TechnicianAccountInformation> {
                                               TechnicianAccountInformationSubmitButtonEvent());
                                               ///added
                                               GoRouter.of(context).pushNamed(
-              TechnicianAppRouteConstant.technicianSignIn,);
+              LandingAppRouteConstant.technicianSignIn,);
                                     },
                                     ////added
                                     style: ButtonStyle(

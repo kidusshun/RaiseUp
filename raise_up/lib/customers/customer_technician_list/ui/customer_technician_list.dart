@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:raise_up/customers/app_route_customers_constatnts.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +10,7 @@ import 'package:raise_up/technician/technician_profile/ui/technician_profile.dar
 import 'package:raise_up/customers/customer_technician_list/bloc/customer_technician_list_bloc.dart';
 import 'package:raise_up/widgets/selectionButton.dart';
 
+import '../../../landing/app_route_customers_constatnts.dart';
 import '../../../widgets/dateselection.dart';
 import '../model/customer_service_request_model.dart';
 
@@ -23,10 +25,6 @@ class CustomerTechnicianStList extends StatelessWidget {
     );
   }
 }
-
-// class _CustomerTechnicianListState extends State<CustomerTechnicianListState> {
-//   final CustomerTechnicianListBloc technicianServiceRequestBloc =
-//       CustomerTechnicianListBloc();
 
 Widget build(BuildContext context) {
   return BlocProvider(
@@ -56,16 +54,41 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Customer Technician List"),
-        backgroundColor: Color.fromRGBO(251, 165, 46, 1), // App bar color
+        backgroundColor: Color.fromRGBO(251, 165, 46, 1),
+        automaticallyImplyLeading: false,
         actions: [
-          IconButton(
-            icon: Icon(Icons.person),
-            onPressed: () {
-              // technicianServiceRequestBloc.add(
-              //     TechnicianServiceRequestCustomerProfileClickedEvent());
-              // Handle profile icon button press
-            },
-          ),
+          PopupMenuButton(itemBuilder: (context)=>[
+            PopupMenuItem(
+              value:0,
+              child:Row(children:[
+                Icon(Icons.person,color:Color.fromARGB(192, 17, 160, 165)),
+                SizedBox(width:3),
+                Text("Profile")
+              ])
+            ),
+            PopupMenuItem(
+              value:1,
+              child:Row(children:[
+                Icon(Icons.logout,color:Color.fromARGB(255, 187, 45, 34)),
+                SizedBox(width:3),
+                Text("Logout")
+              ])
+            )
+          ],
+          onSelected: (item){
+            switch(item){
+              case(0):
+                GoRouter.of(context).pushNamed(
+                  LandingAppRouteConstant.customerProfile
+                );
+                break;
+              case(1):
+                GoRouter.of(context).pushNamed(
+                  LandingAppRouteConstant.customerSignin
+                );
+            }
+          },
+          )
         ],
       ),
       body:
@@ -205,7 +228,7 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
                               ),
                               Row(
                                 children: [
-                                  Icon(Icons.map),
+                                  Icon(Icons.map,color:Color.fromARGB(192, 17, 160, 165)),
                                   SizedBox(
                                     width: 8.0,
                                   ),
@@ -225,7 +248,7 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
             return Center(
               child: Container(
                   child: Text(
-                "NO DATA",
+                "NO Technicians",
                 style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
@@ -236,70 +259,52 @@ class _CustomerTechnicianListState extends State<CustomerTechnicianList> {
           }
         },
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: Icon(Icons.home),
-              onPressed: () {
-                final customerTechnicianListBloc =
-                    BlocProvider.of<CustomerTechnicianListBloc>(context);
-                customerTechnicianListBloc
-                    .add(CustomerTechnicianListHomeButtonClickedEvent());
-
-                GoRouter.of(context).pushNamed(
-                  CustomerAppRouteConstant.customerTechnicianList,
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Color.fromARGB(255, 206, 157, 10), 
+        unselectedItemColor: Color.fromARGB(255, 99, 99, 99),
+        selectedLabelStyle: TextStyle(color: Colors.amber), 
+        unselectedLabelStyle: TextStyle(color: Colors.grey),
+        currentIndex: 0,
+        onTap:(item){
+          if (item==0){
+            GoRouter.of(context).pushNamed(
+                  LandingAppRouteConstant.customerTechnicianList,
                 );
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () {
-                // final technicianServiceRequestBloc =
-                //     BlocProvider.of<TechnicianServiceRequestBloc>(
-                //         context);
-                // technicianServiceRequestBloc.add(
-                //     TechnicianServiceRequestCustomerProfileClickedEvent());
-
-                // GoRouter.of(context).pushNamed(
-                //   TechnicianAppRouteConstant.technicianServiceRequest,
-                // );
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                GoRouter.of(context).pushNamed(
-                                          CustomerAppRouteConstant
+          }else if(item==1){
+            GoRouter.of(context).pushNamed(
+                                          LandingAppRouteConstant
+                                              .customerServiceRequest,
+                                        );
+          }else if(item==2){
+            BlocProvider.of<CustomerTechnicianListBloc>(context).add(CustomerTechnicianListInitEvent());
+          }else if(item==3){
+            GoRouter.of(context).pushNamed(
+                                          LandingAppRouteConstant
                                               .customerAppointment,
                                         );
-                // final CustomerTechnicianListBloc =
-                //     BlocProvider.of<CustomerTechnicianListBloc>(
-                //         context);
-                // customerTechnicianListBloc.add();
+          }
+        },
 
-                // technicianProfileBloc
-                //     .add(TechnicianProfileTodoButtonClickedEvent());
-                // Handle todo button functionality here
-              },
-            ),
-          ],
-        ),
-      ),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.alarm),
+            label: 'Pending',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.refresh),
+            label: 'Refresh',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.build),
+            label: 'Appointments',
+          ),
+        ],
+      )
     );
   }
 }
 
-class ContactInfo {
-  final String name;
-  final String phoneNumber;
-  final List<String> expertise;
-  final String location;
-
-  ContactInfo(
-      {required this.name,
-      required this.phoneNumber,
-      required this.expertise,
-      required this.location});
-}

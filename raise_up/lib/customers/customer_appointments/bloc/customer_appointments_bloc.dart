@@ -30,7 +30,10 @@ class CustomerAppointmentsBloc
     emit(CustomerAppointmentsLoadingActionState());
     dynamic response =
         await CustomerAppointmentsRepositoryImpl().getAppointments();
-    if (response[0].runtimeType != String) {
+    if (response.length==0){
+      emit(CustomerAppointmentsNoDataState());
+    }
+    else if (response[0].runtimeType != String) {
       emit(CustomerAppointmentsInitState(customerCredential: response));
     } else {
       emit(CustomerAppointmentsErrorActionState(error: response));

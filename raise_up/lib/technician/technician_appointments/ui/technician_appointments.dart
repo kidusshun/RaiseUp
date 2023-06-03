@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:raise_up/technician/app_route_constatnts.dart';
 
+import '../../../landing/app_route_customers_constatnts.dart';
 import '../bloc/technician_appointments_bloc.dart';
 import '../model/technician_appointment_delete_model.dart';
 import '../model/technician_appointments_model.dart';
@@ -53,14 +54,46 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
         backgroundColor: Color.fromARGB(255, 67, 139, 149),
         automaticallyImplyLeading: false,
         actions: [
-          IconButton(
-            icon: Icon(Icons.person),
-            onPressed: () {
-              GoRouter.of(context).pushNamed(
-                TechnicianAppRouteConstant.technicianProfile,
-              );
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.person),
+          //   onPressed: () {
+          //     GoRouter.of(context).pushNamed(
+          //       LandingAppRouteConstant.technicianProfile,
+          //     );
+          //   },
+          // ),
+          PopupMenuButton(itemBuilder: (context)=>[
+            PopupMenuItem(
+              value:0,
+              child:Row(children:[
+                Icon(Icons.person,color:Color.fromARGB(192, 17, 160, 165)),
+                SizedBox(width:3),
+                Text("Profile")
+              ])
+            ),
+            PopupMenuItem(
+              value:1,
+              child:Row(children:[
+                Icon(Icons.logout,color:Color.fromARGB(255, 187, 45, 34)),
+                SizedBox(width:3),
+                Text("Logout")
+              ])
+            )
+          ],
+          onSelected: (item){
+            switch(item){
+              case(0):
+                GoRouter.of(context).pushNamed(
+                  LandingAppRouteConstant.technicianProfile
+                );
+                break;
+              case(1):
+                GoRouter.of(context).pushNamed(
+                  LandingAppRouteConstant.technicianSignIn
+                );
+            }
+          },
+          )
         ],
       ),
       body:
@@ -259,37 +292,40 @@ class _TechnicianServiceRequestState extends State<TechnicianAppointment> {
           }
         },
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: Icon(Icons.home),
-              onPressed: () {
-                GoRouter.of(context).pushNamed(
-                  TechnicianAppRouteConstant.technicianServiceRequest,
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Color.fromARGB(226, 62, 190, 207), 
+        unselectedItemColor: Color.fromARGB(255, 99, 99, 99),
+        selectedLabelStyle: TextStyle(color: Colors.amber), 
+        unselectedLabelStyle: TextStyle(color: Colors.grey),
+        currentIndex: 2,
+        onTap:(item){
+          if (item==0){
+            GoRouter.of(context).pushNamed(
+                  LandingAppRouteConstant.technicianServiceRequest,
                 );
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () {
-                BlocProvider.of<TechnicianAppointmentsBloc>(context).add(TechnicianAppointInitialEvent());
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                GoRouter.of(context).pushNamed(
-                  TechnicianAppRouteConstant.technicianAppointments,
-                );
-                // technicianProfileBloc
-                //     .add(TechnicianProfileTodoButtonClickedEvent());
-                // Handle todo button functionality here
-              },
-            ),
-          ],
-        ),
+          }else if(item==2){
+            GoRouter.of(context).pushNamed(
+                                          LandingAppRouteConstant.technicianAppointments,
+                                        );
+          }else if(item==1){
+            BlocProvider.of<TechnicianAppointmentsBloc>(context).add(TechnicianAppointInitialEvent());
+          }
+        },
+
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.refresh),
+            label: 'Refresh',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.build),
+            label: 'Appointments',
+          ),
+        ],
       ),
     );
   }

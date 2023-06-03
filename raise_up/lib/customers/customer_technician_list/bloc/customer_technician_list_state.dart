@@ -35,3 +35,5 @@ class customerTechnicianListBookButtonClickedFailureActionState
 
 class CustomerTechnicianListNavigateToHomeState
     extends CustomerTechnicianListActionState {}
+
+  class TechnicianListNoDataState extends CustomerTechnicianListState{}

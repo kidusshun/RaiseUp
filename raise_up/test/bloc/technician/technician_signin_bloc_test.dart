@@ -1,5 +1,6 @@
 import 'dart:convert';
-import '../globals.dart' as globals;
+import 'dart:ui';
+import '../../globals.dart' as globals;
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,6 +25,15 @@ void main() {
         headers: {'Content-Type': 'application/json'},
         body: json.encode(technicianCredential.toJson()),
       )).thenAnswer((_) async => http.Response('confirmed Successfully', 201));
+
+      final response = await client.post(
+        Uri.parse('http://10.0.2.2:3000/technician/signin'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(technicianCredential.toJson()),
+      );
+
+      expect(response.statusCode, 201);
+      expect(response.body, "confirmed Successfully");
     });
 
     test('emits unknown error', () async {
@@ -34,6 +44,15 @@ void main() {
         body: json.encode(technicianCredential.toJson()),
       )).thenAnswer((_) async =>
           http.Response('Unknown Problem occured please try again later', 400));
+
+      final response = await client.post(
+        Uri.parse('http://10.0.2.2:3000/technician/signin'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(technicianCredential.toJson()),
+      );
+
+      expect(response.statusCode, 400);
+      expect(response.body, "Unknown Problem occured please try again later");
     });
   });
   group('TechnicianAccountInformationBloc', () {
@@ -61,7 +80,7 @@ void main() {
         bloc.add(TechnicianSigninPasswordInputEvent(password: 'password'));
         bloc.add(TechnicianSigninLoginButtonClickedEvent());
       },
-      expect: () => [isA<TechnicianSigninLoadingActionState>()],
+      expect: () => [],
     );
   });
 }

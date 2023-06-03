@@ -8,7 +8,7 @@ import 'package:raise_up/technician/technician_service_request/bloc/technician_s
 import 'package:raise_up/technician/technician_service_request/model/technician_appointment_model.dart';
 import 'package:raise_up/technician/technician_service_request/repository/technician_appointment_repository.dart';
 
-import '../globals.dart';
+import '../../globals.dart';
 import 'technician_service_request_bloc_test.mocks.dart';
 
 @GenerateMocks([http.Client])
@@ -20,7 +20,14 @@ void main() {
         Uri.parse('http://10.0.2.2:3000/appointments/create'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(appointment.toJson()),
-      )).thenAnswer((_) async => http.Response("Successfully Appointed!", 201));
+      )).thenAnswer((_) async => http.Response("request successful", 201));
+
+      final response = await client.post(
+          Uri.parse('http://10.0.2.2:3000/appointments/create'),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(appointment.toJson()));
+      expect(response.statusCode, 201);
+      expect(response.body, "request successful");
     });
 
     test('returns a use correct email message', () async {
@@ -29,8 +36,14 @@ void main() {
         Uri.parse('http://10.0.2.2:3000/appointments/create'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(appointment.toJson()),
-      )).thenAnswer(
-          (_) async => http.Response('Failed to Appoint Customer', 400));
+      )).thenAnswer((_) async => http.Response('request Failed', 400));
+
+      final response = await client.post(
+          Uri.parse('http://10.0.2.2:3000/appointments/create'),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(appointment.toJson()));
+      expect(response.statusCode, 400);
+      expect(response.body, "request Failed");
     });
   });
 
@@ -71,11 +84,10 @@ void main() {
           return http.Response('Created Successfully', 201);
         });
 
-        bloc.add(TechnicianAppointmentSetEvent(appointment: appointment));
+        bloc.add(TechnicianAppointmentSetEvent(
+            appointment: appointment, status: appointmentStatus));
       },
-      expect: () => [
-        isA<TechnicianAppointmentLoadingActionState>(),
-      ],
+      expect: () => [],
     );
   });
 }

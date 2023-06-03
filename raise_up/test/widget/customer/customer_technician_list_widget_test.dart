@@ -21,7 +21,7 @@ void main() {
 
         expect(find.text('Customer Technician List'), findsOneWidget);
 
-        expect(find.text('NO DATA'), findsOneWidget);
+        expect(find.text('NO Technicians'), findsOneWidget);
       });
     });
   });

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -9,7 +10,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:raise_up/technician/technician_account_information/bloc/technician_account_information_bloc.dart';
 import 'package:raise_up/technician/technician_account_information/repository/technician_account_information_credential_repository.dart';
 
-import '../globals.dart';
+import '../../globals.dart';
 import 'technician_account_information_bloc_test.mocks.dart';
 
 @GenerateMocks([http.Client])
@@ -21,7 +22,16 @@ void main() {
         Uri.parse('http://10.0.2.2:3000/technician-profile'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(account.toJson()),
-      )).thenAnswer((_) async => http.Response("Successfully Appointed!", 201));
+      )).thenAnswer((_) async => http.Response("Successfully created!", 201));
+
+      final response = await client.post(
+        Uri.parse('http://10.0.2.2:3000/technician-profile'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(account.toJson()),
+      );
+
+      expect(response.statusCode, 201);
+      expect(response.body, "Successfully created!");
     });
 
     test('returns a use correct email message', () async {
@@ -32,6 +42,15 @@ void main() {
         body: json.encode(account.toJson()),
       )).thenAnswer(
           (_) async => http.Response('Failed to Appoint Customer', 400));
+
+      final response = await client.post(
+        Uri.parse('http://10.0.2.2:3000/appointments/create'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(account.toJson()),
+      );
+
+      expect(response.statusCode, 400);
+      expect(response.body, "Failed to Appoint Customer");
     });
   });
   group('TechnicianAccountInformationBloc', () {

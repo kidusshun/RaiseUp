@@ -1,16 +1,16 @@
 import 'dart:convert';
-import '../globals.dart' as globals;
-
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:raise_up/technician/technician_signup/bloc/technician_signup_bloc.dart';
-import 'package:raise_up/technician/technician_signup/model/technician_credential_model.dart';
-import 'package:raise_up/technician/technician_signup/repository/technician_credential_repository.dart';
 
-import 'technician_signup_bloc_test.mocks.dart';
+import 'package:raise_up/customers/customer_signup/bloc/customer_signup_bloc.dart';
+import 'package:raise_up/customers/customer_signup/model/customer_credential_model.dart';
+import 'package:raise_up/customers/customer_signup/Repository/customer_credential_repository.dart';
+
+import '../../globals.dart' as globals;
+import 'customer_signup_bloc_test.mocks.dart';
 
 @GenerateMocks([http.Client])
 void main() {
@@ -24,6 +24,14 @@ void main() {
         headers: {'Content-Type': 'application/json'},
         body: json.encode(technicianCredential.toJson()),
       )).thenAnswer((_) async => http.Response('Created Successfully', 201));
+      final response = await client.post(
+        Uri.parse('http://10.0.2.2:3000/technician/signup'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(technicianCredential.toJson()),
+      );
+
+      expect(response.statusCode, 201);
+      expect(response.body, "Created Successfully");
     });
 
     test('returns a use correct email message', () async {
@@ -32,20 +40,29 @@ void main() {
         Uri.parse('http://10.0.2.2:3000/technician/signup'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(technicianCredential.toJson()),
-      )).thenAnswer((_) async => http.Response('Use a correct email', 400));
+      )).thenAnswer((_) async => http.Response('Use a correct email', 403));
+
+      final response = await client.post(
+        Uri.parse('http://10.0.2.2:3000/technician/signup'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(technicianCredential.toJson()),
+      );
+
+      expect(response.statusCode, 403);
+      expect(response.body, "Use a correct email");
     });
   });
   group('TechnicianSignupBloc', () {
-    late TechnicianSignupBloc technicianSignupBloc;
+    late CustomerSignupBloc technicianSignupBloc;
 
     setUp(() {
-      technicianSignupBloc = TechnicianSignupBloc();
+      technicianSignupBloc = CustomerSignupBloc();
     });
 
     tearDown(() {
       technicianSignupBloc.close();
     });
-    blocTest<TechnicianSignupBloc, TechnicianSignupState>(
+    blocTest<CustomerSignupBloc, CustomerSignupState>(
       'emits [TechnicianSignupLoadingActionState, TechnicianSignUpSucessActionState] when signup is successful',
       build: () {
         final Client = MockClient();
@@ -55,10 +72,10 @@ void main() {
           // use the technicianCredential object to encode the body
           body: json.encode(technicianCredential.toJson()),
         )).thenAnswer((_) async => http.Response('Created Successfully', 201));
-        return TechnicianSignupBloc();
+        return CustomerSignupBloc();
       },
       act: (bloc) {
-        final technicianCredential = TechnicianCredential(
+        final technicianCredential = CustomerCredential(
           email: 'test@example.com',
           name: 'Test User',
           password: 'password',
@@ -74,30 +91,28 @@ void main() {
         });
 
         bloc.add(
-            TechnicianSignupEmailInputEvent(email: technicianCredential.email));
-        bloc.add(
-            TechnicianSignupNameInputEvent(name: technicianCredential.name));
-        bloc.add(TechnicianSignupPasswordInputEvent(
+            CustomerSignupEmailInputEvent(email: technicianCredential.email));
+        bloc.add(CustomerSignupNameInputEvent(name: technicianCredential.name));
+        bloc.add(CustomerSignupPasswordInputEvent(
             password: technicianCredential.password));
-        bloc.add(TechnicianSignupConfirmationPasswordInputEvent(
+        bloc.add(CustomerSignupConfirmationPasswordInputEvent(
             confirmationPassword: technicianCredential.password));
         // emit the signup button clicked event without parameters
-        bloc.add(TechnicianSignupSignupButtonClickedEvent());
+        bloc.add(CustomerSignupSignupButtonClickedEvent());
       },
       expect: () => [
-        isA<TechnicianSignUpConfarmationPasswordCorrectState>(),
-        isA<TechnicianSignupLoadingActionState>(),
-        // TechnicianSignUpSucessActionState(sucess: "Created Successfully")
+        isA<CustomerSignUpConfarmationPasswordCorrectState>(),
+        isA<CustomerSignupLoadingActionState>(),
       ],
     );
   });
 
   group('TechnicianSignupBloc', () {
-    late TechnicianSignupBloc technicianSignupBloc;
+    late CustomerSignupBloc technicianSignupBloc;
     late MockClient mockClient;
 
     setUp(() {
-      technicianSignupBloc = TechnicianSignupBloc();
+      technicianSignupBloc = CustomerSignupBloc();
       mockClient = MockClient();
       // stub the post method with the mock client
       when(mockClient.post(
@@ -119,33 +134,32 @@ void main() {
       );
       expect(response.statusCode, 201);
     });
-    blocTest<TechnicianSignupBloc, TechnicianSignupState>(
+    blocTest<CustomerSignupBloc, CustomerSignupState>(
       'emits [TechnicianSignupLoadingActionState, TechnicianSignUpSucessActionState] when signup is successful',
       build: () {
-        return TechnicianSignupBloc();
+        return CustomerSignupBloc();
       },
       act: (bloc) {
-        final technicianCredential = TechnicianCredential(
+        final technicianCredential = CustomerCredential(
           email: 'test@example.com',
           name: 'Test User',
           password: 'password',
         );
 
         bloc.add(
-            TechnicianSignupEmailInputEvent(email: technicianCredential.email));
-        bloc.add(
-            TechnicianSignupNameInputEvent(name: technicianCredential.name));
-        bloc.add(TechnicianSignupPasswordInputEvent(
+            CustomerSignupEmailInputEvent(email: technicianCredential.email));
+        bloc.add(CustomerSignupNameInputEvent(name: technicianCredential.name));
+        bloc.add(CustomerSignupPasswordInputEvent(
             password: technicianCredential.password));
-        bloc.add(TechnicianSignupConfirmationPasswordInputEvent(
+        bloc.add(CustomerSignupConfirmationPasswordInputEvent(
             confirmationPassword: technicianCredential.password));
 
-        bloc.add(TechnicianSignupSignupButtonClickedEvent());
+        bloc.add(CustomerSignupSignupButtonClickedEvent());
       },
       wait: const Duration(seconds: 1),
       expect: () => [
-        isA<TechnicianSignUpConfarmationPasswordCorrectState>(),
-        isA<TechnicianSignupLoadingActionState>(),
+        isA<CustomerSignUpConfarmationPasswordCorrectState>(),
+        isA<CustomerSignupLoadingActionState>(),
       ],
     );
   });

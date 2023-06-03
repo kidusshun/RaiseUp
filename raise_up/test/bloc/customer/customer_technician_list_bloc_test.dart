@@ -13,7 +13,7 @@ import 'package:raise_up/customers/customer_technician_list/model/technician_cre
 import 'package:raise_up/customers/customer_technician_list/model/customer_service_request_model.dart';
 
 import 'customer_technician_list_bloc_test.mocks.dart';
-import '../globals.dart';
+import '../../globals.dart';
 
 TechnicianCredential credential = TechnicianCredential(
     expertise: ["engine"],
@@ -30,17 +30,31 @@ void main() {
       when(client.get(
         Uri.parse('http://10.0.2.2:3000/customer-profile/getAllTechnician'),
         headers: {'Content-Type': 'application/json'},
-      )).thenAnswer((_) async => http.Response("Successfully Appointed!", 200));
+      )).thenAnswer((_) async => http.Response("request successful", 200));
+
+      final response = await client.get(
+        Uri.parse('http://10.0.2.2:3000/customer-profile/getAllTechnician'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      expect(response.statusCode, 200);
+      expect(response.body, "request successful");
     });
 
     test('returns a failed to appoint customer', () async {
       final client = MockClient();
-      when(client.post(
-        Uri.parse('Failed to Appoint Customer'),
+      when(client.get(
+        Uri.parse('http://10.0.2.2:3000/customer-profile/getAllTechnician'),
         headers: {'Content-Type': 'application/json'},
-        body: json.encode(serviceRequest.toJson()),
-      )).thenAnswer(
-          (_) async => http.Response('Failed to appoint customer', 400));
+      )).thenAnswer((_) async => http.Response("request failed", 400));
+
+      final response = await client.get(
+        Uri.parse('http://10.0.2.2:3000/customer-profile/getAllTechnician'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      expect(response.statusCode, 400);
+      expect(response.body, "request failed");
     });
   });
 

@@ -21,3 +21,5 @@ class CustomerAppointmentsErrorActionState
   String error;
   CustomerAppointmentsErrorActionState({required this.error});
 }
+
+class CustomerAppointmentsNoDataState extends CustomerAppointmentsState{} 

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:raise_up/technician/technician_service_request/model/technician_appointment_model.dart';
 import 'package:raise_up/widgets/timeselection.dart';
 import 'package:raise_up/technician/technician_profile/ui/technician_profile.dart';
 import 'package:intl/intl.dart';
 
+import '../../../landing/app_route_customers_constatnts.dart';
+import '../../app_route_customers_constatnts.dart';
 import '../bloc/customer_appointments_bloc.dart';
 import '../model/customer_appointments_model.dart';
 
@@ -39,16 +42,45 @@ class _CustomerServiceRequestState extends State<CustomerAppointment> {
 
   @override
   Widget build(BuildContext context) {
-    // Hard-coded sample data for contacts
+    int selectedIndex=0;
     return Scaffold(
       appBar: AppBar(
         title: Text("Technician appointments"),
         backgroundColor:Color.fromRGBO(251, 165, 46, 1),
+        automaticallyImplyLeading: false,
         actions: [
-          IconButton(
-            icon: Icon(Icons.person),
-            onPressed: () {},
-          ),
+          PopupMenuButton(itemBuilder: (context)=>[
+            PopupMenuItem(
+              value:0,
+              child:Row(children:[
+                Icon(Icons.person,color:Color.fromARGB(192, 17, 160, 165)),
+                SizedBox(width:3),
+                Text("Profile")
+              ])
+            ),
+            PopupMenuItem(
+              value:1,
+              child:Row(children:[
+                Icon(Icons.logout,color:Color.fromARGB(255, 187, 45, 34)),
+                SizedBox(width:3),
+                Text("Logout")
+              ])
+            )
+          ],
+          onSelected: (item){
+            switch(item){
+              case(0):
+                GoRouter.of(context).pushNamed(
+                  LandingAppRouteConstant.customerProfile
+                );
+                break;
+              case(1):
+                GoRouter.of(context).pushNamed(
+                  LandingAppRouteConstant.customerSignin
+                );
+            }
+          },
+          )
         ],
       ),
       body: BlocConsumer<CustomerAppointmentsBloc, CustomerAppointmentsState>(
@@ -96,10 +128,10 @@ class _CustomerServiceRequestState extends State<CustomerAppointment> {
                 itemCount: appointments.length,
                 itemBuilder: (context, index) {
                   final contactInfo = appointments[index];
-                  return GestureDetector(
-                    onTap: () async {
-                      TimeSelection time = TimeSelection();
-                      await time.selectTime(context);
+                  return 
+                    // onTap: () async {
+                      // TimeSelection time = TimeSelection();
+                      // await time.selectTime(context);
 
                       // // TimeOfDay time = TimeOfDay.now();
                       // DateTime now = contactInfo.date;
@@ -124,8 +156,8 @@ class _CustomerServiceRequestState extends State<CustomerAppointment> {
                       // context.read<TechnicianAppointmentsBloc>().add(
                       //                     TechnicianAppointmentSetEvent(
                       //                         appointment: appointment));
-                    },
-                    child: Padding(
+                    // },
+                    Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                       child: SingleChildScrollView(
@@ -135,7 +167,7 @@ class _CustomerServiceRequestState extends State<CustomerAppointment> {
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
-                                color: Color.fromARGB(115, 93, 193, 206),
+                                color: Color.fromARGB(73, 255, 193, 7),
                                 spreadRadius: 2,
                                 blurRadius: 5,
                                 offset:
@@ -147,19 +179,73 @@ class _CustomerServiceRequestState extends State<CustomerAppointment> {
                             contentPadding: EdgeInsets.all(10),
                             leading: CircleAvatar(
                               backgroundColor:
-                                  Color.fromARGB(255, 67, 139, 149),
+                                  Colors.amber,
                               foregroundColor: Colors.white,
                               radius: 25.0,
                               child: Icon(Icons.person),
                             ),
                             title: Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Name: ${contactInfo.name}',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Technician:',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 19,
+                                        ),
+                                      ),
+                                      SizedBox(width:2),
+                                      Text(
+                                        '${contactInfo.name}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 19,
+                                          color:Color.fromARGB(255, 156, 158, 6)
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height:14),
+                                  Row(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(Icons.phone,color:Colors.teal),
+                                          SizedBox(width:2),
+                                          Text(
+                                            '${contactInfo.phone}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17,
+                                              color:Color.fromARGB(255, 156, 158, 6)
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(width:8),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.map,color:Colors.teal),
+                                          SizedBox(width:2),
+                                          Text(
+                                            '${contactInfo.location}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17,
+                                              color:Color.fromARGB(255, 156, 158, 6),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                    ],
+                                  ),
+
+                                ],
                               ),
                             ),
                             trailing: Column(
@@ -168,17 +254,18 @@ class _CustomerServiceRequestState extends State<CustomerAppointment> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(Icons.schedule,
-                                        color: Colors.teal[300]),
+                                        color: Colors.teal),
                                     // Text(DateFormat('dd-MM-yy').format(contactInfo.date)),
                                     Text(DateFormat('h:mm a')
                                         .format(contactInfo.time))
                                   ],
                                 ),
+                                SizedBox(height:4),
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(Icons.calendar_month,
-                                        color: Colors.teal[300]),
+                                        color: Colors.teal),
                                     // Text(DateFormat('dd-MM-yy').format(contactInfo.date)),
                                     Text(DateFormat('dd-MM-yy')
                                         .format(contactInfo.time))
@@ -189,29 +276,68 @@ class _CustomerServiceRequestState extends State<CustomerAppointment> {
                           ),
                         ),
                       ),
-                    ),
-                  );
+                    );
                 },
               ),
             );
           } else {
-            return Container();
+            return Center(
+              child: Container(
+                child:Text(
+                  "No Appointment",
+                  style:TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 38,
+                    color:Color.fromARGB(171, 255, 193, 7),
+                  ) ,
+                )
+              ),
+            );
           }
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Color.fromARGB(255, 206, 157, 10), 
+        unselectedItemColor: Color.fromARGB(255, 99, 99, 99),
+        selectedLabelStyle: TextStyle(color: Colors.amber), 
+        unselectedLabelStyle: TextStyle(color: Colors.grey),
+        currentIndex: 3,
+        onTap:(item){
+          if (item==0){
+            GoRouter.of(context).pushNamed(
+                  LandingAppRouteConstant.customerTechnicianList,
+                );
+          }else if(item==1){
+            GoRouter.of(context).pushNamed(
+                                          LandingAppRouteConstant
+                                              .customerServiceRequest,
+                                        );
+          }else if(item==2){
+            BlocProvider.of<CustomerAppointmentsBloc>(context).add(CustomerAppointInitialEvent());
+          }else if(item==3){
+            GoRouter.of(context).pushNamed(
+                                          LandingAppRouteConstant
+                                              .customerAppointment,
+                                        );
+          }
+        },
+
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.alarm),
+            label: 'Pending',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.refresh),
             label: 'Refresh',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'To Do',
+            icon: Icon(Icons.build),
+            label: 'Appointments',
           ),
         ],
       ),
@@ -219,15 +345,4 @@ class _CustomerServiceRequestState extends State<CustomerAppointment> {
   }
 }
 
-class ContactInfo {
-  String customerName;
-  String customerPhoneNumber;
-  int id;
-  String note;
 
-  ContactInfo(
-      {required this.note,
-      required this.id,
-      required this.customerName,
-      required this.customerPhoneNumber});
-}

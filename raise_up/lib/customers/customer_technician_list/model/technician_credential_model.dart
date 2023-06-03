@@ -10,7 +10,7 @@ class TechnicianCredential{
   factory TechnicianCredential.fromJson(Map<String, dynamic> json) {
     List<String> expertiseList=[];
     json['expertise'].forEach((value){
-      expertiseList.add(value["name"]);
+      expertiseList.add(value['name']);
     });
     return TechnicianCredential(
       expertise: expertiseList,

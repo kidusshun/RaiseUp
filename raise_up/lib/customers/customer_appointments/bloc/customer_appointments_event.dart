@@ -10,3 +10,4 @@ class CustomerAppointmentsCustomerCardClickedEvent
 }
 
 class CustomerAppointInitialEvent extends CustomerAppointmentsEvent {}
+
